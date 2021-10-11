@@ -4,27 +4,39 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
-    EditText game_name_edit;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        game_name_edit =  findViewById(R.id.game_name_edit);
+        EditText game_name_edit =  findViewById(R.id.game_name_edit);
         Button search_button = findViewById(R.id.search_button);
-        search_button.setOnClickListener(v -> search_game());
+        
+        // Get the entire game list of steam
+        GetGameList ggl = new GetGameList();
+        String game_list = null;
+        try {
+            game_list = (String) ggl.execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (game_list != null)System.out.println(game_list);
+        String finalGame_list = game_list;
+        search_button.setOnClickListener(v -> search_game(game_name_edit, finalGame_list));
+
     }
 
 
-    public void search_game(){
+    public void search_game(EditText game_name_edit, String game_list){
         String game_name = String.valueOf(game_name_edit.getText());
         if (game_name.equals("")){
             Context context = getApplicationContext();
@@ -34,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
         else{
-            /// search the game
-        }
+            SearchGame sg = new SearchGame();
+            sg.execute(game_name,game_list);
 
+        }
     }
+
+
 }
