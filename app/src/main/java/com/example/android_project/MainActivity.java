@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,20 +24,19 @@ public class MainActivity extends AppCompatActivity {
         
         // Get the entire game list of steam
         GetGameList ggl = new GetGameList();
-        String game_list = null;
+        HashMap<Integer,String> game_map = null;
         try {
-            game_list = (String) ggl.execute().get();
+            game_map = (HashMap<Integer, String>) ggl.execute().get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        if (game_list != null)System.out.println(game_list);
-        String finalGame_list = game_list;
-        search_button.setOnClickListener(v -> search_game(game_name_edit, finalGame_list));
+        HashMap<Integer, String> finalGame_map = game_map;
+        search_button.setOnClickListener(v -> search_game(game_name_edit, finalGame_map));
 
     }
 
 
-    public void search_game(EditText game_name_edit, String game_list){
+    public void search_game(EditText game_name_edit, HashMap<Integer,String> game_map){
         String game_name = String.valueOf(game_name_edit.getText());
         if (game_name.equals("")){
             Context context = getApplicationContext();
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             SearchGame sg = new SearchGame();
-            sg.execute(game_name,game_list);
+            sg.execute(game_name,game_map);
 
         }
     }
