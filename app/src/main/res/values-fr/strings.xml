@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_hint">Nom du jeu …</string>
+    <string name="missing_name">Veuillez entrer un nom de jeu !</string>
+</resources>

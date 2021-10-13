@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         String game_name = String.valueOf(game_name_edit.getText());
         if (game_name.equals("")){
             Context context = getApplicationContext();
-            CharSequence text = "Please type a game name !";
+            CharSequence text = getString(R.string.missing_name);
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Steam Tracker</string>
+    <string name="app_name" translatable="false">Steam Tracker</string>
+    <string name="search_hint">Game name …</string>
+    <string name="missing_name">Please type a game name !</string>
 </resources>
