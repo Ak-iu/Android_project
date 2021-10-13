@@ -2,9 +2,6 @@ package com.example.android_project;
 
 import android.os.AsyncTask;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +13,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class GetGameList extends AsyncTask {
@@ -47,7 +43,7 @@ public class GetGameList extends AsyncTask {
         return sb.toString();
     }
 
-    public Map<Integer,String> getGamesMap(String game_list) throws JsonProcessingException, JSONException {
+    public Map<Integer,String> getGamesMap(String game_list) throws JSONException {
         HashMap<Integer,String> game_map = new HashMap<Integer,String>();
         JSONObject obj = new JSONObject(game_list);
         JSONArray game_array = obj.getJSONObject("applist").getJSONArray("apps");
