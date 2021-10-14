@@ -8,11 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
+
+    GamesListFragment gamesListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         search_button.setOnClickListener(v -> search_game(game_name_edit, finalGame_map));
 
+
+        gamesListFragment = new GamesListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
     }
 
 
@@ -51,7 +55,11 @@ public class MainActivity extends AppCompatActivity {
         // if not null search the game in the list
         else{
             SearchGame sg = new SearchGame(game_map);
-            sg.search(game_name);
+            HashMap<Integer,String> gamesFound;
+            gamesFound = sg.search(game_name);
+
+
+            gamesListFragment.updateList(gamesFound);
 
         }
     }
