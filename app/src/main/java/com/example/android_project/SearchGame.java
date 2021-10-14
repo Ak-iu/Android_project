@@ -1,5 +1,6 @@
 package com.example.android_project;
 
+
 import java.util.Locale;
 import java.util.Map.Entry;
 
@@ -23,6 +24,8 @@ public class SearchGame{
 
             if (name.trim().toLowerCase(Locale.ROOT).contains(game_name.trim().toLowerCase(Locale.ROOT))) games_found.put(appid,name);
         }
+
         return games_found;
     }
+
 }

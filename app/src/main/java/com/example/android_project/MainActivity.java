@@ -1,8 +1,11 @@
 package com.example.android_project;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     GamesListFragment gamesListFragment;
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void search_game(EditText game_name_edit, HashMap<Integer,String> game_map){
         // game name typed by user
         String game_name = String.valueOf(game_name_edit.getText());
@@ -59,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             gamesFound = sg.search(game_name);
 
 
-            gamesListFragment.updateList(gamesFound);
+            gamesListFragment.updateList(gamesFound,game_name);
 
         }
     }
