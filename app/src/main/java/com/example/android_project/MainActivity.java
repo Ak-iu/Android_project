@@ -1,9 +1,11 @@
 package com.example.android_project;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,11 +55,7 @@ public class MainActivity extends AppCompatActivity {
         String game_name = String.valueOf(game_name_edit.getText());
         // check if the game name is empty
         if (game_name.equals("")){
-            Context context = getApplicationContext();
-            CharSequence text = getString(R.string.missing_name);
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            Toast.makeText(getApplicationContext(),getString(R.string.missing_name), LENGTH_SHORT).show();
         }
         // if not null search the game in the list
         else{
@@ -65,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
             HashMap<Integer,String> gamesFound;
             gamesFound = sg.search(game_name);
 
-
+            if( gamesFound.size() == 0 )
+                Toast.makeText(getApplicationContext(),getString(R.string.no_game_result), LENGTH_SHORT).show();
             gamesListFragment.updateList(gamesFound,game_name);
 
         }
