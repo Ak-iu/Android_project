@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/dark_blue_steam"
+
+    android:textColor="#FFFFFF"
+    android:textColorHint="#FFFFFF"
+    >
 
     <EditText
         android:id="@+id/game_name_edit"
@@ -15,6 +20,8 @@
         android:ems="10"
         android:hint="@string/search_hint"
         android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
