@@ -45,8 +45,6 @@ public class GamesRecyclerViewAdapter extends RecyclerView.Adapter<GamesRecycler
     }
 
 
-
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
@@ -55,9 +53,10 @@ public class GamesRecyclerViewAdapter extends RecyclerView.Adapter<GamesRecycler
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
+            mIdView = view.findViewById(R.id.id);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mItem.getName() + "'";

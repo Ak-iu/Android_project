@@ -6,20 +6,20 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
     GamesListFragment gamesListFragment;
-
+    InternalStorage istor = new InternalStorage();
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -30,17 +30,20 @@ public class MainActivity extends AppCompatActivity {
 
         EditText game_name_edit =  findViewById(R.id.game_name_edit);
         Button search_button = findViewById(R.id.search_button);
-        
+
         // Get the entire game list of steam
-        GetGameList ggl = new GetGameList();
+        GetGameList_Task ggl = new GetGameList_Task(this);
+        //Async Task
+        ggl.execute();
+        //Retrieve game map in internal storage
         HashMap<Integer,String> game_map = null;
         try {
-            game_map = (HashMap<Integer, String>) ggl.execute().get();
-        } catch (ExecutionException | InterruptedException e) {
+            game_map= istor.readHashMapOnInternalStorage(this,"gameMap");
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        HashMap<Integer, String> finalGame_map = game_map;
 
+        HashMap<Integer, String> finalGame_map = game_map;
         search_button.setOnClickListener(v -> search_game(game_name_edit, finalGame_map));
 
 
@@ -69,6 +72,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-
 }
