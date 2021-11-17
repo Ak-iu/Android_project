@@ -16,10 +16,7 @@ public class InternalStorage {
 
 
     public void writeFileOnInternalStorage(Context mcoContext, String sFileName, String sBody) {
-        File dir = new File(mcoContext.getFilesDir(),"steam_tracker");
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
+        File dir = mcoContext.getFilesDir();
 
         try {
             File gpxfile = new File(dir, sFileName);
@@ -32,8 +29,8 @@ public class InternalStorage {
         }
 
     }
-    public String ReadOnInternalStorage(Context mcoContext, String path) throws IOException {
-        path = mcoContext.getFilesDir() + path;
+    public String readOnInternalStorage(Context mcoContext, String sFile) throws IOException {
+        String path = mcoContext.getFilesDir() +"/"+ sFile;
         FileInputStream in = new FileInputStream(path);
         String string = "";
         StringBuilder stringBuilder = new StringBuilder();
@@ -49,8 +46,6 @@ public class InternalStorage {
             stringBuilder.append(string).append("\n");
         }
         in.close();
-        Toast.makeText(mcoContext, stringBuilder.toString(),
-                Toast.LENGTH_LONG).show();
 
         return stringBuilder.toString();
     }
