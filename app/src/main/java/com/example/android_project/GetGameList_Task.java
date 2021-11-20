@@ -3,47 +3,69 @@ package com.example.android_project;
 import android.content.Context;
 import android.os.AsyncTask;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GetGameList_Task extends AsyncTask {
 
     private final String apiKey = "C3F1DE897195B9FAAA2572D388F90D52";
     private final String urlLink = "https://api.steampowered.com/IStoreService/GetAppList/v1/?key=" + apiKey;
+    private final Context ctx;
     private int lastID;
+    private long last_modified = 0;
+    private long max_modified = -1;
     private boolean more_results;
-    private InternalStorage istor = new InternalStorage();
-
-    private Context ctx;
+    private boolean finished = false;
 
     public GetGameList_Task(Context _ctx) {
         this.ctx = _ctx;
     }
 
-
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
+            Map<Integer, String> game_map = new HashMap<>();
+            try {
+                game_map = InternalStorage.readMapOnInternalStorage(ctx, "gameMap");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException ignored) {
+            } //Le fichier n'a pas encore été créé
+            finished = false;
             lastID = 0;
             more_results = true;
-            HashMap<Integer, String> game_map = new HashMap<>();
+            try {
+                last_modified = InternalStorage.readLongOnInternalStorage(ctx, "last_modified");
+            } catch (FileNotFoundException ignored) {
+            } //Le fichier n'a pas encore été créé
+            catch (EOFException e) { //Le fichier est vide
+                last_modified = 0;
+            }
             do {
-                String game_list = getAllGames(lastID);
+                String game_list = getAllGames(lastID, last_modified);
                 game_map.putAll(getGamesMap(game_list));
             } while (more_results);
+            System.out.println("Récupération finie");
+            last_modified = max_modified;
 
             // write the map on internal storage
-            istor.writeFileOnInternalStorage(ctx,"gameMap",game_map);
-            System.out.println("Map mis en mémoire interne! ");
+            InternalStorage.writeFileOnInternalStorage(ctx, "gameMap", game_map, Context.MODE_APPEND);
+            InternalStorage.writeLongOnInternalStorage(ctx, "last_modified", last_modified, Context.MODE_PRIVATE);
+            System.out.println("Map mise en mémoire interne !");
+
+            finished = true;
+            return game_map;
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -51,8 +73,8 @@ public class GetGameList_Task extends AsyncTask {
         return null;
     }
 
-    public String getAllGames(int id) throws IOException {
-        URL url = new URL(urlLink + "&last_appid=" + id);
+    public String getAllGames(int id, long modified_since) throws IOException {
+        URL url = new URL(urlLink + "&last_appid=" + id + "&if_modified_since=" + modified_since);
         URLConnection c = url.openConnection();
         c.connect();
         BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
@@ -65,8 +87,8 @@ public class GetGameList_Task extends AsyncTask {
         return sb.toString();
     }
 
-    public HashMap<Integer, String> getGamesMap(String game_list) throws JSONException {
-        HashMap<Integer, String> game_map = new HashMap<>();
+    public Map<Integer, String> getGamesMap(String game_list) throws JSONException {
+        Map<Integer, String> game_map = new HashMap<>();
         JSONObject obj = new JSONObject(game_list);
         JSONObject response = obj.getJSONObject("response");
         JSONArray game_array = response.getJSONArray("apps");
@@ -74,6 +96,10 @@ public class GetGameList_Task extends AsyncTask {
         for (int i = 0; i < game_array.length(); i++) {
             int appid = game_array.getJSONObject(i).getInt("appid");
             String name = game_array.getJSONObject(i).getString("name");
+            long last_modified = game_array.getJSONObject(i).getLong("last_modified");
+            if (max_modified < last_modified) {
+                max_modified = last_modified;
+            }
             game_map.put(appid, name);
         }
         try {
@@ -84,5 +110,9 @@ public class GetGameList_Task extends AsyncTask {
             more_results = false;
         }
         return game_map;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }
