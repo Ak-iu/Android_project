@@ -11,42 +11,52 @@
     android:textColorHint="#FFFFFF"
     >
 
-    <EditText
-        android:id="@+id/game_name_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="200dp"
-        android:ems="10"
-        android:hint="@string/search_hint"
-        android:inputType="textPersonName"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="71dp">
 
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="65dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="200dp"
-        android:drawableLeft="@drawable/search_loop_foreground"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/game_name_edit"
-        app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/game_name_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/search_hint"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF" />
 
-    <FrameLayout
-        android:id="@+id/GamesFoundFragment"
-        class="com.example.android_project.GamesListFragment.java"
-        android:layout_width="367dp"
-        android:layout_height="406dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_name_edit"
-        app:layout_constraintVertical_bias="0.483" />
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@drawable/search_loop_foreground"
+
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/GamesFoundFragment"
+            class="com.example.android_project.GamesListFragment.java"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
