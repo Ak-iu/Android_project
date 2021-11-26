@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Steam Tracker</string>
     <string name="search_hint">Game name …</string>
     <string name="missing_name">Please type a game name !</string>
     <string name="no_game_result">No games found</string>
+    <string name="game_list_loading">Please wait few seconds\nGame list is loading… </string>
 </resources>

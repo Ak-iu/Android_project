@@ -37,6 +37,10 @@
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF" />
 
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="match_parent" />
+
             <Button
                 android:id="@+id/search_button"
                 android:layout_width="65dp"
@@ -46,17 +50,24 @@
                 android:drawableLeft="@drawable/search_loop_foreground"
 
                 tools:ignore="SpeakableTextPresentCheck" />
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
         </LinearLayout>
 
         <FrameLayout
             android:id="@+id/GamesFoundFragment"
             class="com.example.android_project.GamesListFragment.java"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/loadint_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/game_list_loading"/>
+
+
+        </FrameLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

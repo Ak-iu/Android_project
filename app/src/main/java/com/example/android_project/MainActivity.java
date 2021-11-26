@@ -6,19 +6,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    GamesListFragment gamesListFragment;
-    GetGameList_Task ggl = new GetGameList_Task(this);
-    Map<Integer, String> game_map = null;
+    private GamesListFragment gamesListFragment;
+    private TextView loading_text = null;
+    private GetGameList_Task ggl = new GetGameList_Task(this);
+    private Map<Integer, String> game_map = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         EditText game_name_edit = findViewById(R.id.game_name_edit);
         Button search_button = findViewById(R.id.search_button);
+        loading_text = findViewById(R.id.loadint_text);
+
 
         //Async Task
         ggl.execute();
@@ -54,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
             if (!ggl.isFinished())
                 Toast.makeText(getApplicationContext(), "Chargement des jeux", LENGTH_SHORT).show();
 
-            while (!ggl.isFinished()) {
-                //faire un indicateur de chargement
-            }
             System.out.println("fin du chargement");
 
             try {
@@ -74,5 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public TextView getLoading_text() {
+        return loading_text;
     }
 }

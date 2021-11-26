@@ -2,6 +2,9 @@ package com.example.android_project;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+
+import androidx.transition.Transition;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +66,10 @@ public class GetGameList_Task extends AsyncTask {
             InternalStorage.writeFileOnInternalStorage(ctx, "gameMap", game_map, Context.MODE_APPEND);
             InternalStorage.writeLongOnInternalStorage(ctx, "last_modified", last_modified, Context.MODE_PRIVATE);
             System.out.println("Map mise en mémoire interne !");
+            //
+            MainActivity MainAct = (MainActivity) ctx;
+            MainAct.getLoading_text().setVisibility(View.INVISIBLE);
+
 
             finished = true;
             return game_map;
