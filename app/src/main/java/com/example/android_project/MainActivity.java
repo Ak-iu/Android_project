@@ -2,7 +2,6 @@ package com.example.android_project;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GamesListFragment gamesListFragment;
     private TextView alert_text = null;
+    private Button retry_button = null;
     private GetGameList_Task ggl = new GetGameList_Task(this);
     private Map<Integer, String> game_map = null;
 
@@ -33,13 +33,14 @@ public class MainActivity extends AppCompatActivity {
         EditText game_name_edit = findViewById(R.id.game_name_edit);
         Button search_button = findViewById(R.id.search_button);
         alert_text = findViewById(R.id.alert_text);
+        retry_button = findViewById(R.id.btnRetry);
         show_loading_text();
 
         //Async Task pour obtenir la liste des jeux
-        ggl.execute();
+        GetGameList();
 
         search_button.setOnClickListener(v -> search_game(game_name_edit/*, finalGame_map*/));
-
+        retry_button.setOnClickListener(v -> GetGameList());
         gamesListFragment = new GamesListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
     }
@@ -79,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void GetGameList() {
+        GetGameList_Task ggl = new GetGameList_Task(this);
+        ggl.execute();
+    }
+
+
+
     public void show_loading_text(){
         alert_text.setText(getString(R.string.loading_game_list));
     }
@@ -90,5 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public void internetError() {
         alert_text.setText(getString(R.string.no_internet_connection));
         alert_text.setTextColor(getResources().getColor(R.color.orange));
+        //display off /
+        retry_button.setVisibility(View.VISIBLE);
     }
 }

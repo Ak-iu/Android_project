@@ -46,11 +46,14 @@
                 android:layout_width="65dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="15dp"
                 android:layout_marginTop="20dp"
                 android:drawableLeft="@drawable/search_loop_foreground"
 
                 tools:ignore="SpeakableTextPresentCheck" />
         </LinearLayout>
+
+
 
         <FrameLayout
             android:id="@+id/GamesFoundFragment"
@@ -58,13 +61,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <TextView
-                android:id="@+id/alert_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/loading_game_list"/>
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/alert_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+
+                    android:minHeight="48dp"
+                    android:text="@string/loading_game_list" />
+
+                <Button
+                    android:id="@+id/btnRetry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="@string/retry"
+                    android:textColor="@color/orange"
+                    android:visibility="invisible"
+                    />
+
+            </LinearLayout>
+
+
 
 
         </FrameLayout>

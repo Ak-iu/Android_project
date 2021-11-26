@@ -6,4 +6,5 @@
     <string name="no_game_result">No games found</string>
     <string name="loading_game_list">Please wait few seconds\nGame list is loading… </string>
     <string name="no_internet_connection">"No internet connection !"</string>
+    <string name="retry">Retry</string>
 </resources>
