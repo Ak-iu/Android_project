@@ -2,8 +2,10 @@ package com.example.android_project;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,15 +14,13 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private GamesListFragment gamesListFragment;
-    private TextView loading_text = null;
+    private TextView alert_text = null;
     private GetGameList_Task ggl = new GetGameList_Task(this);
     private Map<Integer, String> game_map = null;
 
@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
 
         EditText game_name_edit = findViewById(R.id.game_name_edit);
         Button search_button = findViewById(R.id.search_button);
-        loading_text = findViewById(R.id.loadint_text);
+        alert_text = findViewById(R.id.alert_text);
+        show_loading_text();
 
-
-        //Async Task
+        //Async Task pour obtenir la liste des jeux
         ggl.execute();
 
         search_button.setOnClickListener(v -> search_game(game_name_edit/*, finalGame_map*/));
@@ -79,7 +79,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public TextView getLoading_text() {
-        return loading_text;
+    public void show_loading_text(){
+        alert_text.setText(getString(R.string.loading_game_list));
+    }
+
+    public void disableAlert() {
+        alert_text.setVisibility(View.INVISIBLE);
+    }
+
+    public void internetError() {
+        alert_text.setText(getString(R.string.no_internet_connection));
+        alert_text.setTextColor(getResources().getColor(R.color.orange));
     }
 }

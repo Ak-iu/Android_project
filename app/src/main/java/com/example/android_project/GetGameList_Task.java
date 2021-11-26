@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 
-import androidx.transition.Transition;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,14 +23,17 @@ public class GetGameList_Task extends AsyncTask {
     private final String apiKey = "C3F1DE897195B9FAAA2572D388F90D52";
     private final String urlLink = "https://api.steampowered.com/IStoreService/GetAppList/v1/?key=" + apiKey;
     private final Context ctx;
+    private MainActivity MainAct;
     private int lastID;
     private long last_modified = 0;
     private long max_modified = -1;
     private boolean more_results;
     private boolean finished = false;
+    private boolean internet_error = false;
 
     public GetGameList_Task(Context _ctx) {
         this.ctx = _ctx;
+        this.MainAct = (MainActivity) _ctx;
     }
 
     @Override
@@ -67,8 +68,7 @@ public class GetGameList_Task extends AsyncTask {
             InternalStorage.writeLongOnInternalStorage(ctx, "last_modified", last_modified, Context.MODE_PRIVATE);
             System.out.println("Map mise en mémoire interne !");
             //
-            MainActivity MainAct = (MainActivity) ctx;
-            MainAct.getLoading_text().setVisibility(View.INVISIBLE);
+            MainAct.disableAlert();
 
 
             finished = true;
@@ -80,10 +80,23 @@ public class GetGameList_Task extends AsyncTask {
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+
+        if(internet_error) MainAct.internetError();
+
+    }
+
     public String getAllGames(int id, long modified_since) throws IOException {
         URL url = new URL(urlLink + "&last_appid=" + id + "&if_modified_since=" + modified_since);
         URLConnection c = url.openConnection();
-        c.connect();
+        try {
+            c.connect();
+        } catch (IOException e) {
+            internet_error = true;
+            e.printStackTrace();
+        }
         BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
         StringBuilder sb = new StringBuilder();
         String line;

@@ -59,12 +59,12 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/loadint_text"
+                android:id="@+id/alert_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="@string/game_list_loading"/>
+                android:text="@string/loading_game_list"/>
 
 
         </FrameLayout>

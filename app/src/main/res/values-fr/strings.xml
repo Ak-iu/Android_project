@@ -3,5 +3,6 @@
     <string name="search_hint">Nom du jeu …</string>
     <string name="missing_name">Veuillez entrer un nom de jeu !</string>
     <string name="no_game_result">Aucun jeu trouvé</string>
-    <string name="game_list_loading">Veuillez patienter quelques secondes\nChargement de la liste des jeux… </string>
+    <string name="loading_game_list">Veuillez patienter quelques secondes\nChargement de la liste des jeux… </string>
+    <string name="no_internet_connection">"Aucune connection internet !</string>>
 </resources>
