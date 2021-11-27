@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
         else {
             System.out.println("début du chargement");
 
-            if (!ggl.isFinished())
-                Toast.makeText(getApplicationContext(), "Chargement des jeux", LENGTH_SHORT).show();
+            //if (!ggl.isFinished())
+                //Toast.makeText(getApplicationContext(), "Chargement des jeux", LENGTH_SHORT).show();
 
-            System.out.println("fin du chargement");
+            //System.out.println("fin du chargement");
 
             try {
                 game_map = (Map<Integer, String>) ggl.get();
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 if (gamesFound.size() == 0)
                     Toast.makeText(getApplicationContext(), getString(R.string.no_game_result), LENGTH_SHORT).show();
                 gamesListFragment.updateList(gamesFound, game_name);
-
+                System.out.println(game_name + " : " + gamesFound.keySet().toArray()[0]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void GetGameList() {
-        GetGameList_Task ggl = new GetGameList_Task(this);
+        //GetGameList_Task ggl = new GetGameList_Task(this);
         ggl.execute();
     }
 

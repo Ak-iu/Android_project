@@ -7,4 +7,22 @@
     <string name="loading_game_list">Please wait few seconds\nGame list is loading… </string>
     <string name="no_internet_connection">"No internet connection !"</string>
     <string name="retry">Retry</string>
+    <string name="title_activity_details">Details</string>
+    <string name="action_favourite">Favourite</string>
+    <string name="lang">english</string>
+    <string name="currency">us</string>
+    <string name="details_name">Name</string>
+    <string name="details_descr">Description</string>
+    <string name="details_loading">Loading…</string>
+    <string name="devs">Developers</string>
+    <string name="discount_price">Reduced price</string>
+    <string name="discount">Discount</string>
+    <string name="price">Price</string>
+    <string name="publish">Publishers</string>
+    <string name="release_date">Release date</string>
+    <string name="score_mc">Score Metacritic</string>
+    <string name="details_fav_description">favourites</string>
+    <string name="player_count">Player count</string>
+
+    <string name="large_text" />
 </resources>
