@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private GamesListFragment gamesListFragment;
     private TextView alert_text = null;
     private Button retry_button = null;
-    private GetGameList_Task ggl = new GetGameList_Task(this);
+    private Button search_button = null;
     private Map<Integer, String> game_map = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -31,16 +31,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EditText game_name_edit = findViewById(R.id.game_name_edit);
-        Button search_button = findViewById(R.id.search_button);
+        search_button = findViewById(R.id.search_button);
+        search_button.setVisibility(View.INVISIBLE);
+
         alert_text = findViewById(R.id.alert_text);
         retry_button = findViewById(R.id.btnRetry);
+        retry_button.setVisibility(View.INVISIBLE);
         show_loading_text();
 
         //Async Task pour obtenir la liste des jeux
         GetGameList();
 
-        search_button.setOnClickListener(v -> search_game(game_name_edit/*, finalGame_map*/));
-        retry_button.setOnClickListener(v -> GetGameList());
+        search_button.setOnClickListener(v -> search_game(game_name_edit));
+        retry_button.setOnClickListener(v -> {
+            System.out.println("Retry");
+            alert_text.setText(R.string.loading_game_list);
+            alert_text.setTextColor(getColor(R.color.white));
+            retry_button.setVisibility(View.INVISIBLE);
+            GetGameList();
+        });
+
         gamesListFragment = new GamesListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
     }
@@ -56,17 +66,8 @@ public class MainActivity extends AppCompatActivity {
         }
         // if not null search the game in the list
         else {
-            System.out.println("début du chargement");
-
-            //if (!ggl.isFinished())
-                //Toast.makeText(getApplicationContext(), "Chargement des jeux", LENGTH_SHORT).show();
-
-            //System.out.println("fin du chargement");
-
+            System.out.println("début de la recherche");
             try {
-                game_map = (Map<Integer, String>) ggl.get();
-                System.out.println("map acquise");
-
                 SearchGame sg = new SearchGame(game_map);
                 HashMap<Integer, String> gamesFound = sg.search(game_name);
 
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void GetGameList() {
-        //GetGameList_Task ggl = new GetGameList_Task(this);
+        GetGameList_Task ggl = new GetGameList_Task(this);
         ggl.execute();
     }
 
@@ -91,13 +92,16 @@ public class MainActivity extends AppCompatActivity {
         alert_text.setText(getString(R.string.loading_game_list));
     }
 
-    public void disableAlert() {
+    public void getListReturn(Map<Integer,String> game_map) {
+        this.game_map = game_map;
+        System.out.println("map acquise");
         alert_text.setVisibility(View.INVISIBLE);
+        search_button.setVisibility(View.VISIBLE);
     }
 
     public void internetError() {
         alert_text.setText(getString(R.string.no_internet_connection));
-        alert_text.setTextColor(getResources().getColor(R.color.orange));
+        alert_text.setTextColor(getResources().getColor(R.color.design_default_color_error));
         //display off /
         retry_button.setVisibility(View.VISIBLE);
     }

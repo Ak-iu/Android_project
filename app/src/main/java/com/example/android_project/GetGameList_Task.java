@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,57 +23,52 @@ public class GetGameList_Task extends AsyncTask {
 
     private final String apiKey = "C3F1DE897195B9FAAA2572D388F90D52";
     private final String urlLink = "https://api.steampowered.com/IStoreService/GetAppList/v1/?key=" + apiKey;
-    private final Context ctx;
-    private MainActivity MainAct;
+    private MainActivity main;
     private int lastID;
     private long last_modified = 0;
     private long max_modified = -1;
     private boolean more_results;
-    private boolean finished = false;
     private boolean internet_error = false;
+    private Map<Integer,String> game_map;
 
-    public GetGameList_Task(Context _ctx) {
-        this.ctx = _ctx;
-        this.MainAct = (MainActivity) _ctx;
+    public GetGameList_Task(MainActivity main) {
+        this.main = main;
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            Map<Integer, String> game_map = new HashMap<>();
+            game_map = new HashMap<>();
             try {
-                game_map = InternalStorage.readMapOnInternalStorage(ctx, "gameMap");
+                game_map = InternalStorage.readMapOnInternalStorage(main, "gameMap");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (FileNotFoundException ignored) {
-            } //Le fichier n'a pas encore été créé
-            finished = false;
+            } catch (FileNotFoundException ignored) { //Le fichier n'a pas encore été créé
+            }
             lastID = 0;
             more_results = true;
             try {
-                last_modified = InternalStorage.readLongOnInternalStorage(ctx, "last_modified");
-            } catch (FileNotFoundException ignored) {
-            } //Le fichier n'a pas encore été créé
+                last_modified = InternalStorage.readLongOnInternalStorage(main, "last_modified");
+            } catch (FileNotFoundException ignored) { //Le fichier n'a pas encore été créé
+            }
             catch (EOFException e) { //Le fichier est vide
                 last_modified = 0;
             }
             do {
                 String game_list = getAllGames(lastID, last_modified);
-                game_map.putAll(getGamesMap(game_list));
-            } while (more_results);
-            System.out.println("Récupération finie");
-            last_modified = max_modified;
+                if (!internet_error) game_map.putAll(getGamesMap(game_list));
+            } while (more_results && !internet_error);
 
-            // write the map on internal storage
-            InternalStorage.writeFileOnInternalStorage(ctx, "gameMap", game_map, Context.MODE_APPEND);
-            InternalStorage.writeLongOnInternalStorage(ctx, "last_modified", last_modified, Context.MODE_PRIVATE);
-            System.out.println("Map mise en mémoire interne !");
-            //
-            MainAct.disableAlert();
+            if (!internet_error) {
+                System.out.println("Récupération finie");
+                last_modified = max_modified;
 
-
-            finished = true;
-            return game_map;
+                // write the map on internal storage
+                InternalStorage.writeFileOnInternalStorage(main, "gameMap", game_map, Context.MODE_APPEND);
+                InternalStorage.writeLongOnInternalStorage(main, "last_modified", last_modified, Context.MODE_PRIVATE);
+                System.out.println("Map mise en mémoire interne !");
+            }
+            return null;
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -83,9 +79,10 @@ public class GetGameList_Task extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-
-        if(internet_error) MainAct.internetError();
-
+        if(internet_error)
+            main.internetError();
+        else
+            main.getListReturn(game_map);
     }
 
     public String getAllGames(int id, long modified_since) throws IOException {
@@ -93,46 +90,48 @@ public class GetGameList_Task extends AsyncTask {
         URLConnection c = url.openConnection();
         try {
             c.connect();
-        } catch (IOException e) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            br.close();
+            return sb.toString();
+
+        } catch (UnknownHostException e) { //No internet connexion
             internet_error = true;
-            e.printStackTrace();
+            System.out.println("Internet error");
+            //e.printStackTrace();
+            return null;
         }
-        BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line).append("\n");
-        }
-        br.close();
-        return sb.toString();
     }
 
     public Map<Integer, String> getGamesMap(String game_list) throws JSONException {
         Map<Integer, String> game_map = new HashMap<>();
         JSONObject obj = new JSONObject(game_list);
         JSONObject response = obj.getJSONObject("response");
-        JSONArray game_array = response.getJSONArray("apps");
-
-        for (int i = 0; i < game_array.length(); i++) {
-            int appid = game_array.getJSONObject(i).getInt("appid");
-            String name = game_array.getJSONObject(i).getString("name");
-            long last_modified = game_array.getJSONObject(i).getLong("last_modified");
-            if (max_modified < last_modified) {
-                max_modified = last_modified;
-            }
-            game_map.put(appid, name);
-        }
         try {
-            more_results = response.getBoolean("have_more_results");
-            lastID = response.getInt("last_appid");
-            System.out.println(lastID);
-        } catch (JSONException j) {
-            more_results = false;
-        }
+            JSONArray game_array = response.getJSONArray("apps");
+
+            for (int i = 0; i < game_array.length(); i++) {
+                int appid = game_array.getJSONObject(i).getInt("appid");
+                String name = game_array.getJSONObject(i).getString("name");
+                long last_modified = game_array.getJSONObject(i).getLong("last_modified");
+                if (max_modified < last_modified) {
+                    max_modified = last_modified;
+                }
+                game_map.put(appid, name);
+            }
+            try {
+                more_results = response.getBoolean("have_more_results");
+                lastID = response.getInt("last_appid");
+                System.out.println(lastID);
+            } catch (JSONException j) {
+                more_results = false;
+            }
+        } catch (JSONException ignored) {} //The response is empty because there is no new games
         return game_map;
     }
 
-    public boolean isFinished() {
-        return finished;
-    }
 }
