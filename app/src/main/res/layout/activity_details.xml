@@ -2,19 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    android:layout_height="match_parent"
+    android:background="@color/dark_blue_steam" >
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -27,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/details_loading" />
+            android:text="@string/details_loading"
+            android:textColor="@color/white"/>
 
     </androidx.core.widget.NestedScrollView>
 
@@ -37,10 +27,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/dark_blue_steam"
+        android:backgroundTint="@color/black_blue_steam"
         android:contentDescription="@string/details_fav_description"
-        android:src="@drawable/dark_blue_star_24"
+        android:src="@drawable/white_add_circle_outline_24"
         app:maxImageSize="24dp"
+        app:rippleColor="@color/grey"
         app:tint="@null" />
+
+    <Button
+        android:id="@+id/details_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/black_blue_steam"
+        android:text="@string/retry"
+        android:textColor="@color/white"
+        app:rippleColor="@color/grey" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

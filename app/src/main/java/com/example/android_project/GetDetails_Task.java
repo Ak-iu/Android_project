@@ -35,8 +35,11 @@ public class GetDetails_Task extends AsyncTask {
             result_player_count = getPlayerCount();
             result_details = getDetails();
 
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
             internet_error = true;
+            System.out.println("Internet Error");
+            //e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
@@ -120,6 +123,9 @@ public class GetDetails_Task extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        parent.returnResultGetDetails(result_player_count,result_details);
+        if (!internet_error)
+            parent.returnResultGetDetails(result_player_count,result_details);
+        else
+            parent.internetError();
     }
 }

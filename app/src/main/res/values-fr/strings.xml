@@ -5,5 +5,24 @@
     <string name="no_game_result">Aucun jeu trouvé</string>
     <string name="loading_game_list">Veuillez patienter quelques secondes\nChargement de la liste des jeux… </string>
     <string name="no_internet_connection">"Aucune connection internet !</string>
-    <string name="retry">Ressayer</string>>
+    <string name="retry">Ressayer</string>
+    <string name="title_activity_details">Détails</string>
+    <string name="action_favourite">Favoris</string>
+    <string name="lang">french</string>
+    <string name="currency">fr</string>
+    <string name="details_name">Nom</string>
+    <string name="details_descr">Description</string>
+    <string name="details_loading">Chargement…</string>
+    <string name="devs">Développeurs</string>
+    <string name="discount_price">Prix soldé</string>
+    <string name="discount">Réduction</string>
+    <string name="price">Prix</string>
+    <string name="publish">Éditeurs</string>
+    <string name="release_date">Date de sortie</string>
+    <string name="score_mc">Score Metacritic</string>
+    <string name="details_fav_description">favoris</string>
+    <string name="player_count">Nombre de joueurs</string>
+    <string name="details_error_id">Erreur : l\'id est invalide</string>
+    <string name="fav_added">Ajouté aux favoris</string>
+    <string name="fav_removed">Supprimé des favoris</string>>
 </resources>
