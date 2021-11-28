@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ public class GamesListFragment extends Fragment {
     Map<Integer, String> games_map = new HashMap<>();
     List<Game> games_list = new ArrayList<>();
     private GamesRecyclerViewAdapter adapter;
+    private OnListFragmentInteractionListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class GamesListFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            if (adapter == null) adapter = new GamesRecyclerViewAdapter(games_list);
+            if (adapter == null) adapter = new GamesRecyclerViewAdapter(games_list,mListener);
             recyclerView.setAdapter(adapter);
         }
 
@@ -84,4 +86,26 @@ public class GamesListFragment extends Fragment {
 
         return a_list;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnListFragmentInteractionListener {
+        void onListFragmentInteraction(int appid, String name);
+    }
+
 }

@@ -14,9 +14,11 @@ import java.util.List;
 public class GamesRecyclerViewAdapter extends RecyclerView.Adapter<GamesRecyclerViewAdapter.ViewHolder> {
 
     private final List<Game> mValues;
+    private final GamesListFragment.OnListFragmentInteractionListener mListener;
 
-    public GamesRecyclerViewAdapter(List<Game> _games) {
+    public GamesRecyclerViewAdapter(List<Game> _games, GamesListFragment.OnListFragmentInteractionListener listener) {
         this.mValues = _games;
+        this.mListener = listener;
     }
 
 
@@ -33,10 +35,11 @@ public class GamesRecyclerViewAdapter extends RecyclerView.Adapter<GamesRecycler
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getName());
 
-
-        holder.mView.setOnClickListener(v ->
-                System.out.println("appid : " + mValues.get(position).getAppiid())
-        );
+        holder.mView.setOnClickListener(v -> {
+            System.out.println("appid : " + mValues.get(position).getAppiid());
+            if (null != mListener)
+                mListener.onListFragmentInteraction(mValues.get(position).getAppiid(), mValues.get(position).getName());
+        });
     }
 
     @Override
@@ -62,4 +65,5 @@ public class GamesRecyclerViewAdapter extends RecyclerView.Adapter<GamesRecycler
             return super.toString() + " '" + mItem.getName() + "'";
         }
     }
+
 }

@@ -8,7 +8,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -32,9 +34,13 @@ public class GetDetails_Task extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            result_player_count = getPlayerCount();
+            internet_error = false;
+            try {
+                result_player_count = getPlayerCount();
+            } catch (FileNotFoundException e) {
+                result_player_count = 0;
+            }
             result_details = getDetails();
-
         } catch (IOException e) {
             internet_error = true;
             System.out.println("Internet Error");
@@ -59,7 +65,10 @@ public class GetDetails_Task extends AsyncTask {
         br.close();
         String result = sb.toString();
         JSONObject obj = new JSONObject(result);
-        return obj.getJSONObject("response").getInt("player_count");
+
+        if(obj.getJSONObject("response").getInt("result") == 1)
+            return obj.getJSONObject("response").getInt("player_count");
+       return 0;
     }
 
     private String getDetails() throws IOException, JSONException{
@@ -81,42 +90,53 @@ public class GetDetails_Task extends AsyncTask {
         JSONObject data = new JSONObject(result).getJSONObject(appid+"").getJSONObject("data");
 
         //Prix
-        JSONObject prix = data.getJSONObject("price_overview");
-        int discount = prix.getInt("discount_percent");
-        if (discount > 0) {
-            details.append(parent.getString(R.string.discount_price)).append(" : ").append(prix.getString("final_formatted")).append("\n");
-            details.append(parent.getString(R.string.discount)).append(" : -").append(discount).append("%\n\n");
-        }
-        else {
-            details.append(parent.getString(R.string.price)).append(" : ").append(prix.getString("final_formatted")).append("\n\n");
-        }
+        try {
+            JSONObject prix = data.getJSONObject("price_overview");
+            int discount = prix.getInt("discount_percent");
+            if (discount > 0) {
+                details.append(parent.getString(R.string.discount_price)).append(" : ").append(prix.getString("final_formatted")).append("\n");
+                details.append(parent.getString(R.string.discount)).append(" : -").append(discount).append("%\n\n");
+            } else {
+                details.append(parent.getString(R.string.price)).append(" : ").append(prix.getString("final_formatted")).append("\n\n");
+            }
+        } catch (JSONException ignored) {}
 
         //Description
-        details.append(parent.getString(R.string.details_descr)).append(" :\n").append(data.getString("short_description")).append("\n\n");
+        try {
+            details.append(parent.getString(R.string.details_descr)).append(" :\n").append(data.getString("short_description")).append("\n\n");
+        } catch (JSONException ignored) {}
 
         //Developpeurs
-        details.append(parent.getString(R.string.devs)).append(" :");
-        JSONArray devs = data.getJSONArray("developers");
-        for (int i=0; i<devs.length(); i++)
-            details.append("\n - ").append(devs.get(i));
-        details.append("\n\n");
+        try {
+            details.append(parent.getString(R.string.devs)).append(" :");
+            JSONArray devs = data.getJSONArray("developers");
+            for (int i = 0; i < devs.length(); i++)
+                details.append("\n - ").append(devs.get(i));
+            details.append("\n\n");
+        } catch (JSONException ignored) {}
 
         //Editeurs
-        details.append(parent.getString(R.string.publish)).append(" :");
-        JSONArray publishers = data.getJSONArray("publishers");
-        for (int i=0; i<publishers.length(); i++)
-            details.append("\n - ").append(publishers.get(i));
-        details.append("\n\n");
+        try {
+            details.append(parent.getString(R.string.publish)).append(" :");
+            JSONArray publishers = data.getJSONArray("publishers");
+            for (int i = 0; i < publishers.length(); i++)
+                details.append("\n - ").append(publishers.get(i));
+            details.append("\n\n");
+        } catch (JSONException ignored) {}
 
         //Date de sortie
-        details.append(parent.getString(R.string.release_date)).append(" : ");
-        details.append(data.getJSONObject("release_date").getString("date"));
-        details.append("\n\n");
+        try {
+            details.append(parent.getString(R.string.release_date)).append(" : ");
+            details.append(data.getJSONObject("release_date").getString("date"));
+            details.append("\n\n");
+        } catch (JSONException ignored) {}
 
         //Score metacritic
-        details.append(parent.getString(R.string.score_mc)).append(" : ");
-        details.append(data.getJSONObject("metacritic").getInt("score"));
-        details.append("\n\n");
+        try {
+            details.append(parent.getString(R.string.score_mc)).append(" : ");
+            details.append(data.getJSONObject("metacritic").getInt("score"));
+            details.append("\n\n");
+        } catch (JSONException ignored) {}
 
         return details.toString();
     }

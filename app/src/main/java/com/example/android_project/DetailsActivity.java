@@ -6,11 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.example.android_project.databinding.ActivityDetailsBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -18,7 +14,6 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String EXTRA_KEY_NAME="name";
     public static final String EXTRA_KEY_APPID="appid";
 
-    private ActivityDetailsBinding binding;
     private Button retry_button = null;
     private TextView textView = null;
     private FloatingActionButton fab = null;
@@ -31,18 +26,12 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
 
         Intent intent = getIntent();
         name = intent.getStringExtra(EXTRA_KEY_NAME);
         appid = intent.getIntExtra(EXTRA_KEY_APPID,-1);
 
-        name = "Celeste";
-        appid = 504230;
-        binding = ActivityDetailsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        //Toolbar toolbar = binding.toolbar;
-        //toolbar.setTitle(getTitle());
         textView = findViewById(R.id.content_details);
 
         retry_button = findViewById(R.id.details_retry);
@@ -65,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
             GetDetails_Task gd = new GetDetails_Task(this, appid);
             gd.execute();
 
-            //tmp
+            //TODO
             isFavourite = false;
             fab.setOnClickListener(view -> {
                 if (isFavourite) {

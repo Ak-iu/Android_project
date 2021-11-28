@@ -2,6 +2,7 @@ package com.example.android_project;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener {
 
     private GamesListFragment gamesListFragment;
     private TextView alert_text = null;
@@ -104,5 +105,14 @@ public class MainActivity extends AppCompatActivity {
         alert_text.setTextColor(getResources().getColor(R.color.design_default_color_error));
         //display off /
         retry_button.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onListFragmentInteraction(int appid, String name) {
+        Intent intent = new Intent(this,DetailsActivity.class);
+        intent.putExtra("name",name);
+        intent.putExtra("appid",appid);
+        System.out.println(name + " -- " +appid);
+        startActivity(intent);
     }
 }
