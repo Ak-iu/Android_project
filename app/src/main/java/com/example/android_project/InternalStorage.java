@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class InternalStorage {
@@ -74,6 +76,46 @@ public class InternalStorage {
         Long n = objectInputStream.readLong();
         objectInputStream.close();
         return n;
+    }
+
+    public static void writeListInFile(List<Integer> list, Context ctx) throws IOException {
+        FileOutputStream fileOutputStream = ctx.openFileOutput("fav_list", Context.MODE_PRIVATE);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        for (int id : list) {
+            objectOutputStream.writeInt(id);
+        }
+        objectOutputStream.close();
+        fileOutputStream.close();
+    }
+
+    public static void addAppIdInFile(int appid, Context ctx) throws IOException { //Doesn't work ?
+        FileOutputStream fileOutputStream = ctx.openFileOutput("fav_list", Context.MODE_APPEND);
+        ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
+        outputStream.writeInt(appid);
+        outputStream.close();
+        fileOutputStream.close();
+    }
+
+    public static List<Integer> readListInFile(Context ctx) {
+        List<Integer> fav_list = new LinkedList<>();
+        try {
+            FileInputStream fileInputStream = ctx.openFileInput("fav_list");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            int id;
+            do {
+                try {
+                    id = objectInputStream.readInt();
+                    fav_list.add(id);
+                } catch (IOException e) {
+                    id = -1;
+                }
+            } while (id != -1);
+            objectInputStream.close();
+            fileInputStream.close();
+            return fav_list;
+        } catch (IOException e) {
+            return fav_list;
+        }
     }
 
 }
