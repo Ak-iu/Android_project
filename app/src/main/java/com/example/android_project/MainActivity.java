@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     }
 
 
-
     public void show_loading_text(){
         alert_text.setText(getString(R.string.loading_game_list));
     }
@@ -102,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     public void internetError() {
         alert_text.setText(getString(R.string.no_internet_connection));
         alert_text.setTextColor(getResources().getColor(R.color.design_default_color_error));
-        //display off /
         retry_button.setVisibility(View.VISIBLE);
     }
 

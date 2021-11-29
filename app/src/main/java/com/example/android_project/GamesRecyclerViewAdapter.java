@@ -36,7 +36,6 @@ public class GamesRecyclerViewAdapter extends RecyclerView.Adapter<GamesRecycler
         holder.mIdView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(v -> {
-            //System.out.println("appid : " + mValues.get(position).getAppiid());
             if (null != mListener)
                 mListener.onListFragmentInteraction(mValues.get(position).getAppiid(), mValues.get(position).getName());
         });

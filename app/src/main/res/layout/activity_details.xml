@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_blue_steam" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" >
 
-    <androidx.core.widget.NestedScrollView
+    <ImageView
+        android:id="@+id/gameHeaderImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/Game_header_image_description"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/details_loading"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        android:background="@color/dark_blue_steam" >
 
-        <TextView
-            android:id="@+id/content_details"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_height="match_parent"
             android:text="@string/details_loading"
-            android:textColor="@color/white"/>
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-    </androidx.core.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/content_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/details_loading"
+                android:textColor="@color/white"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/black_blue_steam"
-        android:contentDescription="@string/details_fav_description"
-        android:src="@drawable/white_add_circle_outline_24"
-        app:maxImageSize="24dp"
-        app:rippleColor="@color/grey"
-        app:tint="@null" />
+        </androidx.core.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/details_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/black_blue_steam"
-        android:text="@string/retry"
-        android:textColor="@color/white"
-        app:rippleColor="@color/grey" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/black_blue_steam"
+            android:contentDescription="@string/details_fav_description"
+            android:src="@drawable/white_add_circle_outline_24"
+            app:maxImageSize="24dp"
+            app:rippleColor="@color/grey"
+            app:tint="@null" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <Button
+            android:id="@+id/details_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/black_blue_steam"
+            android:text="@string/retry"
+            android:textColor="@color/white"
+            app:rippleColor="@color/grey" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
