@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
                 if (gamesFound.size() == 0)
                     Toast.makeText(getApplicationContext(), getString(R.string.no_game_result), LENGTH_SHORT).show();
                 gamesListFragment.updateList(gamesFound, game_name);
-                System.out.println(game_name + " : " + gamesFound.keySet().toArray()[0]);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         Intent intent = new Intent(this,DetailsActivity.class);
         intent.putExtra("name",name);
         intent.putExtra("appid",appid);
-        System.out.println(name + " -- " +appid);
+        System.out.println(name + " : " +appid);
         startActivity(intent);
     }
 }

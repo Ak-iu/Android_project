@@ -16,8 +16,7 @@
         <activity
             android:name=".DetailsActivity"
             android:exported="true"
-            android:label="@string/title_activity_details"
-            android:theme="@style/Theme.Android_project.NoActionBar" />
+            android:label="@string/title_activity_details" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
