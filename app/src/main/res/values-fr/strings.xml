@@ -24,5 +24,6 @@
     <string name="player_count">Nombre de joueurs</string>
     <string name="details_error_id">Erreur : l\'id est invalide</string>
     <string name="fav_added">Ajouté aux favoris</string>
-    <string name="fav_removed">Supprimé des favoris</string>>
+    <string name="fav_removed">Supprimé des favoris</string>
+    <string name="Game_header_image_description">Banderole du jeu</string>
 </resources>
