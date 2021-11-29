@@ -1,14 +1,20 @@
 package com.example.android_project;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameMap { //Singleton
     private Map<Integer,String> game_map;
     private static GameMap instance = null;
+    private final List<GameMapListener> listeners;
+    private boolean hasMap = false;
+    private boolean waiting = false;
 
     private GameMap() {
         game_map = new HashMap<>();
+        listeners = new ArrayList<>();
     }
 
     public static GameMap getInstance() {
@@ -35,5 +41,44 @@ public class GameMap { //Singleton
 
     public void copyMap(Map<Integer,String> map) {
         this.game_map = map;
+    }
+
+    public void addListener(GameMapListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(GameMapListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void notifyListeners() {
+        for (GameMapListener listener : listeners)
+            listener.notifyUpdate();
+    }
+
+    public void notifyErrorListeners() {
+        for (GameMapListener listener : listeners)
+            listener.notifyError();
+    }
+
+    public void setHasMap(boolean hasMap) {
+        this.hasMap = hasMap;
+    }
+
+    public boolean hasMap() {
+        return hasMap;
+    }
+
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
+    }
+
+    public interface GameMapListener {
+        void notifyUpdate();
+        void notifyError();
     }
 }

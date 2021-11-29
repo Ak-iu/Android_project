@@ -2,7 +2,6 @@ package com.example.android_project;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,24 +22,27 @@ public class GetGameList_Task extends AsyncTask {
 
     private final String apiKey = "C3F1DE897195B9FAAA2572D388F90D52";
     private final String urlLink = "https://api.steampowered.com/IStoreService/GetAppList/v1/?key=" + apiKey;
-    private MainActivity main;
+    private Context ctx;
     private int lastID;
     private long last_modified = 0;
     private long max_modified = -1;
     private boolean more_results;
     private boolean internet_error = false;
     private Map<Integer,String> game_map;
+    private GameMap gameMap;
 
-    public GetGameList_Task(MainActivity main) {
-        this.main = main;
+    public GetGameList_Task(Context ctx) {
+        this.ctx = ctx;
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
+            gameMap = GameMap.getInstance();
+            gameMap.setWaiting(true);
             game_map = new HashMap<>();
             try {
-                game_map = InternalStorage.readMapOnInternalStorage(main, "gameMap");
+                game_map = InternalStorage.readMapOnInternalStorage(ctx, "gameMap");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException ignored) { //Le fichier n'a pas encore été créé
@@ -48,7 +50,7 @@ public class GetGameList_Task extends AsyncTask {
             lastID = 0;
             more_results = true;
             try {
-                last_modified = InternalStorage.readLongOnInternalStorage(main, "last_modified");
+                last_modified = InternalStorage.readLongOnInternalStorage(ctx, "last_modified");
             } catch (FileNotFoundException ignored) { //Le fichier n'a pas encore été créé
             }
             catch (EOFException e) { //Le fichier est vide
@@ -64,8 +66,8 @@ public class GetGameList_Task extends AsyncTask {
                 last_modified = max_modified;
 
                 // write the map on internal storage
-                InternalStorage.writeFileOnInternalStorage(main, "gameMap", game_map, Context.MODE_APPEND);
-                InternalStorage.writeLongOnInternalStorage(main, "last_modified", last_modified, Context.MODE_PRIVATE);
+                InternalStorage.writeFileOnInternalStorage(ctx, "gameMap", game_map, Context.MODE_APPEND);
+                InternalStorage.writeLongOnInternalStorage(ctx, "last_modified", last_modified, Context.MODE_PRIVATE);
                 System.out.println("Map mise en mémoire interne !");
             }
             return null;
@@ -79,10 +81,14 @@ public class GetGameList_Task extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+        gameMap.setWaiting(false);
         if(internet_error)
-            main.internetError();
-        else
-            main.getListReturn(game_map);
+            gameMap.notifyErrorListeners();
+        else {
+            gameMap.setHasMap(true);
+            gameMap.copyMap(game_map);
+            gameMap.notifyListeners();
+        }
     }
 
     public String getAllGames(int id, long modified_since) throws IOException {

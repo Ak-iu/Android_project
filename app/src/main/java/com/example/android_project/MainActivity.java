@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
     private GamesListFragment gamesListFragment;
     private TextView alert_text = null;
@@ -49,7 +49,14 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
 
         //Async Task pour obtenir la liste des jeux
         game_map = GameMap.getInstance();
-        GetGameList();
+        game_map.addListener(this);
+        if (game_map.hasMap()) {
+            alert_text.setVisibility(View.INVISIBLE);
+            search_button.setVisibility(View.VISIBLE);
+        }
+        else if (!game_map.isWaiting()){
+            GetGameList();
+        }
 
         search_button.setOnClickListener(v -> search_game(game_name_edit));
         retry_button.setOnClickListener(v -> {
@@ -71,12 +78,16 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     private boolean updateMainFragment(Integer integer) {
         switch (integer){
             case R.id.search:
-                //start search activity
+                /*Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
+                finish();*/
                 break;
 
             case R.id.favorites:
-                //TODO
-                //start favorites activity
+                Intent intent = new Intent(this,FavActivity.class);
+                startActivity(intent);
+                game_map.removeListener(this);
+                finish();
                 break;
         }
         return true;
@@ -117,14 +128,8 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         alert_text.setText(getString(R.string.loading_game_list));
     }
 
-    public void getListReturn(Map<Integer,String> game_map) {
-        this.game_map.copyMap(game_map);
-        System.out.println("map acquise");
-        alert_text.setVisibility(View.INVISIBLE);
-        search_button.setVisibility(View.VISIBLE);
-    }
-
-    public void internetError() {
+    @Override
+    public void notifyError() {
         alert_text.setText(getString(R.string.no_internet_connection));
         alert_text.setTextColor(getResources().getColor(R.color.design_default_color_error));
         retry_button.setVisibility(View.VISIBLE);
@@ -137,5 +142,12 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         intent.putExtra("appid",appid);
         System.out.println(name + " : " +appid);
         startActivity(intent);
+    }
+
+    @Override
+    public void notifyUpdate() {
+        System.out.println("map acquise");
+        alert_text.setVisibility(View.INVISIBLE);
+        search_button.setVisibility(View.VISIBLE);
     }
 }
