@@ -17,7 +17,8 @@
             android:name=".DetailsActivity"
             android:exported="true"
             android:label="@string/title_activity_details"
-            android:theme="@style/Theme.Android_project.NoActionBar" />
+            android:theme="@style/Theme.Android_project.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
