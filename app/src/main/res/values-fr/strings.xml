@@ -28,4 +28,5 @@
     <string name="Game_header_image_description">Banderole du jeu</string>
     <string name="favorites">Favoris</string>
     <string name="search">Chercher</string>
+    <string name="title_activity_fav">Favoris</string>
 </resources>
