@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     private TextView alert_text = null;
     private Button retry_button = null;
     private Button search_button = null;
+    private BottomNavigationView bottomNavigationView;
     private Map<Integer, String> game_map = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         EditText game_name_edit = findViewById(R.id.game_name_edit);
         search_button = findViewById(R.id.search_button);
         search_button.setVisibility(View.INVISIBLE);
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         alert_text = findViewById(R.id.alert_text);
         retry_button = findViewById(R.id.btnRetry);
         retry_button.setVisibility(View.INVISIBLE);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        configureBottomView();
+
         show_loading_text();
 
         //Async Task pour obtenir la liste des jeux
@@ -52,8 +59,28 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
             GetGameList();
         });
 
+
+
         gamesListFragment = new GamesListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
+    }
+
+    private void configureBottomView(){
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
+    }
+
+    private boolean updateMainFragment(Integer integer) {
+        switch (integer){
+            case R.id.search:
+                //start search activity
+                break;
+
+            case R.id.favorites:
+                //TODO
+                //start favorites activity
+                break;
+        }
+        return true;
     }
 
 

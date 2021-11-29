@@ -56,7 +56,7 @@
             android:id="@+id/GamesFoundFragment"
             class="com.example.android_project.GamesListFragment.java"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="400dp">
 
             <TextView
                 android:id="@+id/alert_text"
@@ -80,6 +80,19 @@
                 android:textColor="@color/white"
                 app:rippleColor="@color/grey" />
         </FrameLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:menu="@menu/bottom_navigation_menu" />
+
 
     </LinearLayout>
 

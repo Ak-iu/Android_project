@@ -29,4 +29,6 @@
     <string name="fav_added">Added to favourites</string>
     <string name="fav_removed">Removed from favourites</string>
     <string name="Game_header_image_description">Game header image</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">Search</string>
 </resources>
