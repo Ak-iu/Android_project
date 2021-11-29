@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,7 +39,7 @@ public class GamesListFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            if (adapter == null) adapter = new GamesRecyclerViewAdapter(games_list,mListener);
+            if (adapter == null) adapter = new GamesRecyclerViewAdapter(games_list, mListener);
             recyclerView.setAdapter(adapter);
         }
 
@@ -57,8 +56,7 @@ public class GamesListFragment extends Fragment {
         if (!searched_game.isEmpty()) {
             List<Game> r_gameList = sortByRelevance(gameList, searched_game);
             games_list.addAll(r_gameList);
-        }
-        else {
+        } else {
             games_list.addAll(gameList);
         }
 

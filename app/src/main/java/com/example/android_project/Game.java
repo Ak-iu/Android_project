@@ -2,10 +2,11 @@ package com.example.android_project;
 
 import java.util.Comparator;
 
-public class Game implements Comparable<Game>{
-    private int appiid;
-    private String name;
-    public Game(int _appid,String _name){
+public class Game implements Comparable<Game> {
+    private final int appiid;
+    private final String name;
+
+    public Game(int _appid, String _name) {
         this.appiid = _appid;
         this.name = _name;
     }

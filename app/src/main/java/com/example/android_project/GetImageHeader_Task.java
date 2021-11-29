@@ -12,13 +12,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class GetImageHeader_Task extends AsyncTask {
-    private int appid;
-    private String urlHeader;
-    private DetailsActivity parent;
+    private final int appid;
+    private final String urlHeader;
+    private final DetailsActivity parent;
 
-    public GetImageHeader_Task(DetailsActivity parent, int appid){
+    public GetImageHeader_Task(DetailsActivity parent, int appid) {
         this.appid = appid;
-        this.urlHeader = "https://steamcdn-a.akamaihd.net/steam/apps/"+appid+"/header.jpg";
+        this.urlHeader = "https://steamcdn-a.akamaihd.net/steam/apps/" + appid + "/header.jpg";
         this.parent = parent;
     }
 

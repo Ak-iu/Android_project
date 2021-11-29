@@ -1,7 +1,6 @@
 package com.example.android_project;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +8,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    public static final String EXTRA_KEY_NAME="name";
-    public static final String EXTRA_KEY_APPID="appid";
+    public static final String EXTRA_KEY_NAME = "name";
+    public static final String EXTRA_KEY_APPID = "appid";
 
     private Button retry_button = null;
     private TextView textView = null;
@@ -35,19 +36,19 @@ public class DetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         name = intent.getStringExtra(EXTRA_KEY_NAME);
-        appid = intent.getIntExtra(EXTRA_KEY_APPID,-1);
+        appid = intent.getIntExtra(EXTRA_KEY_APPID, -1);
 
         textView = findViewById(R.id.content_details);
         headerImg = findViewById(R.id.gameHeaderImage);
 
         retry_button = findViewById(R.id.details_retry);
         retry_button.setVisibility(View.INVISIBLE);
-        retry_button.setOnClickListener( v -> {
+        retry_button.setOnClickListener(v -> {
             textView.setText(R.string.details_loading);
             textView.setTextColor(getResources().getColor(R.color.white));
             retry_button.setVisibility(View.INVISIBLE);
             new GetDetails_Task(this, appid).execute();
-            new GetImageHeader_Task(this,appid).execute();
+            new GetImageHeader_Task(this, appid).execute();
         });
 
         fab = findViewById(R.id.fab);
@@ -58,10 +59,9 @@ public class DetailsActivity extends AppCompatActivity {
         if (appid == -1) {
             textView.setText(R.string.details_error_id);
             fab.hide();
-        }
-        else {
+        } else {
             GetDetails_Task gd = new GetDetails_Task(this, appid);
-            GetImageHeader_Task gi = new GetImageHeader_Task(this,appid);
+            GetImageHeader_Task gi = new GetImageHeader_Task(this, appid);
             gd.execute();
             gi.execute();
 
@@ -89,11 +89,11 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void addToFav() {
-        favStorage.addToFav(appid,this);
+        favStorage.addToFav(appid, this);
     }
 
     public void removeFromFav() {
-        favStorage.removeFromFav(appid,this);
+        favStorage.removeFromFav(appid, this);
     }
 
     public void returnResultGetDetails(int player_count, String details) {
@@ -111,7 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
         fab.setVisibility(View.INVISIBLE);
     }
 
-    public void setHeaderImage(Drawable d){
+    public void setHeaderImage(Drawable d) {
         headerImg.setImageDrawable(d);
     }
 }

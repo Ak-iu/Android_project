@@ -1,6 +1,5 @@
 package com.example.android_project;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -10,17 +9,16 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class GetDetails_Task extends AsyncTask {
-    private String urlPlayers = "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?";
-    private String urlDetails = "https://store.steampowered.com/api/appdetails?";
-    private int appid;
+    private final String urlPlayers = "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?";
+    private final String urlDetails = "https://store.steampowered.com/api/appdetails?";
+    private final int appid;
     private boolean internet_error = false;
-    private DetailsActivity parent;
+    private final DetailsActivity parent;
 
     //Results
     private int result_player_count;
@@ -51,7 +49,7 @@ public class GetDetails_Task extends AsyncTask {
         return null;
     }
 
-    private int getPlayerCount() throws JSONException , IOException{
+    private int getPlayerCount() throws JSONException, IOException {
         URL url = new URL(urlPlayers + "appid=" + appid);
         URLConnection c = url.openConnection();
         System.out.println(url);
@@ -66,13 +64,13 @@ public class GetDetails_Task extends AsyncTask {
         String result = sb.toString();
         JSONObject obj = new JSONObject(result);
 
-        if(obj.getJSONObject("response").getInt("result") == 1)
+        if (obj.getJSONObject("response").getInt("result") == 1)
             return obj.getJSONObject("response").getInt("player_count");
-       return 0;
+        return 0;
     }
 
-    private String getDetails() throws IOException, JSONException{
-        URL url = new URL(urlDetails + "appids=" + appid + "&l="+ parent.getString(R.string.lang) + "&cc=" + parent.getString(R.string.currency));
+    private String getDetails() throws IOException, JSONException {
+        URL url = new URL(urlDetails + "appids=" + appid + "&l=" + parent.getString(R.string.lang) + "&cc=" + parent.getString(R.string.currency));
         URLConnection c = url.openConnection();
         System.out.println(url);
         c.connect();
@@ -87,7 +85,7 @@ public class GetDetails_Task extends AsyncTask {
 
         StringBuilder details = new StringBuilder();
 
-        JSONObject data = new JSONObject(result).getJSONObject(appid+"").getJSONObject("data");
+        JSONObject data = new JSONObject(result).getJSONObject(appid + "").getJSONObject("data");
 
         //Prix
         try {
@@ -99,12 +97,14 @@ public class GetDetails_Task extends AsyncTask {
             } else {
                 details.append(parent.getString(R.string.price)).append(" : ").append(prix.getString("final_formatted")).append("\n\n");
             }
-        } catch (JSONException ignored) {}
+        } catch (JSONException ignored) {
+        }
 
         //Description
         try {
             details.append(parent.getString(R.string.details_descr)).append(" :\n").append(data.getString("short_description")).append("\n\n");
-        } catch (JSONException ignored) {}
+        } catch (JSONException ignored) {
+        }
 
         //Developpeurs
         try {
@@ -113,7 +113,8 @@ public class GetDetails_Task extends AsyncTask {
             for (int i = 0; i < devs.length(); i++)
                 details.append("\n - ").append(devs.get(i));
             details.append("\n\n");
-        } catch (JSONException ignored) {}
+        } catch (JSONException ignored) {
+        }
 
         //Editeurs
         try {
@@ -122,21 +123,24 @@ public class GetDetails_Task extends AsyncTask {
             for (int i = 0; i < publishers.length(); i++)
                 details.append("\n - ").append(publishers.get(i));
             details.append("\n\n");
-        } catch (JSONException ignored) {}
+        } catch (JSONException ignored) {
+        }
 
         //Date de sortie
         try {
             details.append(parent.getString(R.string.release_date)).append(" : ");
             details.append(data.getJSONObject("release_date").getString("date"));
             details.append("\n\n");
-        } catch (JSONException ignored) {}
+        } catch (JSONException ignored) {
+        }
 
         //Score metacritic
         try {
             details.append(parent.getString(R.string.score_mc)).append(" : ");
             details.append(data.getJSONObject("metacritic").getInt("score"));
             details.append("\n\n");
-        } catch (JSONException ignored) {}
+        } catch (JSONException ignored) {
+        }
 
         return details.toString();
     }
@@ -144,7 +148,7 @@ public class GetDetails_Task extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         if (!internet_error)
-            parent.returnResultGetDetails(result_player_count,result_details);
+            parent.returnResultGetDetails(result_player_count, result_details);
         else
             parent.internetError();
     }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class SearchGame {
-    private Map<Integer, String> game_map;
+    private final Map<Integer, String> game_map;
 
     public SearchGame(Map<Integer, String> _game_map) {
         this.game_map = _game_map;

@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public class GameMap { //Singleton
-    private Map<Integer,String> game_map;
     private static GameMap instance = null;
     private final List<GameMapListener> listeners;
+    private Map<Integer, String> game_map;
     private boolean hasMap = false;
     private boolean waiting = false;
 
@@ -24,7 +24,7 @@ public class GameMap { //Singleton
     }
 
     public String put(int id, String name) {
-        return game_map.put(id,name);
+        return game_map.put(id, name);
     }
 
     public String remove(int id) {
@@ -39,7 +39,7 @@ public class GameMap { //Singleton
         return game_map;
     }
 
-    public void copyMap(Map<Integer,String> map) {
+    public void copyMap(Map<Integer, String> map) {
         this.game_map = map;
     }
 
@@ -79,6 +79,7 @@ public class GameMap { //Singleton
 
     public interface GameMapListener {
         void notifyUpdate();
+
         void notifyError();
     }
 }

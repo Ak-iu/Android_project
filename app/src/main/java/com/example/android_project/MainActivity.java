@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
@@ -53,8 +52,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         if (game_map.hasMap()) {
             alert_text.setVisibility(View.INVISIBLE);
             search_button.setVisibility(View.VISIBLE);
-        }
-        else if (!game_map.isWaiting()){
+        } else if (!game_map.isWaiting()) {
             GetGameList();
         }
 
@@ -71,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
     }
 
-    private void configureBottomView(){
+    private void configureBottomView() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 
     private boolean updateMainFragment(Integer integer) {
-        switch (integer){
+        switch (integer) {
             case R.id.search:
                 /*Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
                 break;
 
             case R.id.favorites:
-                Intent intent = new Intent(this,FavActivity.class);
+                Intent intent = new Intent(this, FavActivity.class);
                 startActivity(intent);
                 game_map.removeListener(this);
                 finish();
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     }
 
 
-    public void show_loading_text(){
+    public void show_loading_text() {
         alert_text.setText(getString(R.string.loading_game_list));
     }
 
@@ -137,10 +135,10 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
 
     @Override
     public void onListFragmentInteraction(int appid, String name) {
-        Intent intent = new Intent(this,DetailsActivity.class);
-        intent.putExtra("name",name);
-        intent.putExtra("appid",appid);
-        System.out.println(name + " : " +appid);
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra("name", name);
+        intent.putExtra("appid", appid);
+        System.out.println(name + " : " + appid);
         startActivity(intent);
     }
 

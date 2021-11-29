@@ -1,14 +1,14 @@
 package com.example.android_project;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -61,9 +61,9 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
     }
 
     private boolean updateMainFragment(Integer integer) {
-        switch (integer){
+        switch (integer) {
             case R.id.search:
-                Intent intent = new Intent(this,MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 game_map.removeListener(this);
                 finish();
@@ -91,10 +91,10 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
 
     @Override
     public void onListFragmentInteraction(int appid, String name) {
-        Intent intent = new Intent(this,DetailsActivity.class);
-        intent.putExtra("name",name);
-        intent.putExtra("appid",appid);
-        System.out.println(name + " : " +appid);
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra("name", name);
+        intent.putExtra("appid", appid);
+        System.out.println(name + " : " + appid);
         startActivity(intent);
     }
 
@@ -115,7 +115,7 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         retry_button.setVisibility(View.VISIBLE);
     }
 
-    private void configureBottomView(){
+    private void configureBottomView() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 

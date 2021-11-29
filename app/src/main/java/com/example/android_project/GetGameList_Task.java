@@ -22,13 +22,13 @@ public class GetGameList_Task extends AsyncTask {
 
     private final String apiKey = "C3F1DE897195B9FAAA2572D388F90D52";
     private final String urlLink = "https://api.steampowered.com/IStoreService/GetAppList/v1/?key=" + apiKey;
-    private Context ctx;
+    private final Context ctx;
     private int lastID;
     private long last_modified = 0;
     private long max_modified = -1;
     private boolean more_results;
     private boolean internet_error = false;
-    private Map<Integer,String> game_map;
+    private Map<Integer, String> game_map;
     private GameMap gameMap;
 
     public GetGameList_Task(Context ctx) {
@@ -52,8 +52,7 @@ public class GetGameList_Task extends AsyncTask {
             try {
                 last_modified = InternalStorage.readLongOnInternalStorage(ctx, "last_modified");
             } catch (FileNotFoundException ignored) { //Le fichier n'a pas encore été créé
-            }
-            catch (EOFException e) { //Le fichier est vide
+            } catch (EOFException e) { //Le fichier est vide
                 last_modified = 0;
             }
             do {
@@ -82,7 +81,7 @@ public class GetGameList_Task extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         gameMap.setWaiting(false);
-        if(internet_error)
+        if (internet_error)
             gameMap.notifyErrorListeners();
         else {
             gameMap.setHasMap(true);
@@ -136,7 +135,8 @@ public class GetGameList_Task extends AsyncTask {
             } catch (JSONException j) {
                 more_results = false;
             }
-        } catch (JSONException ignored) {} //The response is empty because there is no new games
+        } catch (JSONException ignored) {
+        } //The response is empty because there is no new games
         return game_map;
     }
 
