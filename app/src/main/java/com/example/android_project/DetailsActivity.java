@@ -19,6 +19,7 @@ public class DetailsActivity extends AppCompatActivity {
     private FloatingActionButton fab = null;
 
     private boolean isFavourite;
+    private FavStorage favStorage;
 
     private String name;
     private int appid;
@@ -46,6 +47,8 @@ public class DetailsActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
 
+        favStorage = FavStorage.getInstance(this);
+
         if (appid == -1) {
             textView.setText(R.string.details_error_id);
             fab.hide();
@@ -54,8 +57,8 @@ public class DetailsActivity extends AppCompatActivity {
             GetDetails_Task gd = new GetDetails_Task(this, appid);
             gd.execute();
 
-            //TODO
-            isFavourite = false;
+            isFavourite = favStorage.isFav(appid);
+
             fab.setOnClickListener(view -> {
                 if (isFavourite) {
                     Toast.makeText(getApplicationContext(), R.string.fav_removed, Toast.LENGTH_SHORT).show();
@@ -78,11 +81,11 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void addToFav() {
-        //TODO
+        favStorage.addToFav(appid,this);
     }
 
     public void removeFromFav() {
-        //TODO
+        favStorage.removeFromFav(appid,this);
     }
 
     public void returnResultGetDetails(int player_count, String details) {
