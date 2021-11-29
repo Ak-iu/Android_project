@@ -46,7 +46,8 @@ public class DetailsActivity extends AppCompatActivity {
             textView.setText(R.string.details_loading);
             textView.setTextColor(getResources().getColor(R.color.white));
             retry_button.setVisibility(View.INVISIBLE);
-            (new GetDetails_Task(this, appid)).execute();
+            new GetDetails_Task(this, appid).execute();
+            new GetImageHeader_Task(this,appid).execute();
         });
 
         fab = findViewById(R.id.fab);
