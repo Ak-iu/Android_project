@@ -54,8 +54,13 @@ public class GamesListFragment extends Fragment {
         List<Game> gameList = mapToList(games_map);
         games_list.clear();
 
-        List<Game> r_gameList = sortByRelevance(gameList, searched_game);
-        games_list.addAll(r_gameList);
+        if (!searched_game.isEmpty()) {
+            List<Game> r_gameList = sortByRelevance(gameList, searched_game);
+            games_list.addAll(r_gameList);
+        }
+        else {
+            games_list.addAll(gameList);
+        }
 
         adapter.notifyDataSetChanged();
     }

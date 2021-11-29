@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     private Button retry_button = null;
     private Button search_button = null;
     private BottomNavigationView bottomNavigationView;
-    private Map<Integer, String> game_map = null;
+    private GameMap game_map;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         show_loading_text();
 
         //Async Task pour obtenir la liste des jeux
+        game_map = GameMap.getInstance();
         GetGameList();
 
         search_button.setOnClickListener(v -> search_game(game_name_edit));
@@ -58,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
             retry_button.setVisibility(View.INVISIBLE);
             GetGameList();
         });
-
-
 
         gamesListFragment = new GamesListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void search_game(EditText game_name_edit/*, HashMap<Integer,String> game_map*/) {
+    public void search_game(EditText game_name_edit) {
         // game name typed by user
         String game_name = String.valueOf(game_name_edit.getText());
         // check if the game name is empty
@@ -96,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         else {
             System.out.println("début de la recherche");
             try {
-                SearchGame sg = new SearchGame(game_map);
-                HashMap<Integer, String> gamesFound = sg.search(game_name);
+                SearchGame sg = new SearchGame(game_map.getMap());
+                Map<Integer, String> gamesFound = sg.search(game_name);
 
                 if (gamesFound.size() == 0)
                     Toast.makeText(getApplicationContext(), getString(R.string.no_game_result), LENGTH_SHORT).show();
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     }
 
     public void getListReturn(Map<Integer,String> game_map) {
-        this.game_map = game_map;
+        this.game_map.copyMap(game_map);
         System.out.println("map acquise");
         alert_text.setVisibility(View.INVISIBLE);
         search_button.setVisibility(View.VISIBLE);

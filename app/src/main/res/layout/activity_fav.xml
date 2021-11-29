@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FavActivity"
+    android:background="@color/dark_blue_steam"
+    android:textColor="#FFFFFF"
+    android:textColorHint="#FFFFFF">
+
+
+    <FrameLayout
+        android:id="@+id/GamesFavFragment"
+        class="com.example.android_project.GamesListFragment.java"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

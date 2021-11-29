@@ -14,16 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_project">
         <activity
+            android:name=".FavActivity"
+            android:exported="true"
+            android:label="@string/title_activity_fav"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Android_project" />
+        <activity
             android:name=".DetailsActivity"
             android:exported="true"
             android:label="@string/title_activity_details"
-            android:theme="@style/Theme.Android_project"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Android_project" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
