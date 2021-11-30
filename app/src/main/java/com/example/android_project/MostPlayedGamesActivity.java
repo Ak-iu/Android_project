@@ -21,10 +21,6 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
 
     private ArrayList<Integer> MostPlayedGamesList;
 
-    public void setMpListLoaded(boolean mpListLoaded) {
-        this.mpListLoaded = mpListLoaded;
-    }
-
     private boolean mpListLoaded = false;
     private GamesListFragment gamesListFragment;
     private GameMap game_map;
@@ -65,7 +61,6 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         });
     }
 
-
     public void setGameMPList(ArrayList<Integer> gameList) {
         MostPlayedGamesList = gameList;
     }
@@ -103,11 +98,13 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
 
     @Override
     public void onListFragmentInteraction(int appid, String name) {
-        Intent intent = new Intent(this, MostPlayedGamesActivity.class);
+        Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("appid", appid);
         System.out.println(name + " : " + appid);
+
         startActivity(intent);
+        System.out.println("details -> ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -123,8 +120,6 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
             retry_button.setVisibility(View.INVISIBLE);
             gamesListFragment.updateList(games_mp, "");
         }
-
-
     }
 
     @Override
@@ -132,6 +127,14 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         alert_text.setText(getString(R.string.no_internet_connection));
         alert_text.setTextColor(getResources().getColor(R.color.design_default_color_error));
         retry_button.setVisibility(View.VISIBLE);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this))
+            notifyUpdate();
     }
 
     private void GetGameList() {
@@ -142,6 +145,10 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
     private void GetGameMPList() {
         GetMostPlayedGames_Task gmpg = new GetMostPlayedGames_Task(this);
         gmpg.execute();
+    }
+
+    public void setMpListLoaded(boolean mpListLoaded) {
+        this.mpListLoaded = mpListLoaded;
     }
 
 }
