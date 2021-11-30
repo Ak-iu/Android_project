@@ -13,8 +13,11 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class MostPlayedGamesActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener,GameMap.GameMapListener{
@@ -110,7 +113,7 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void notifyUpdate() {
-        Map<Integer, String> games_mp = new HashMap<>();
+        LinkedHashMap<Integer, String> games_mp = new LinkedHashMap<>();
 
         if( mpListLoaded ) {
             for (int id : MostPlayedGamesList)
