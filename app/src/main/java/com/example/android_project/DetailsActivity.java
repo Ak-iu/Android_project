@@ -1,6 +1,8 @@
 package com.example.android_project;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -48,48 +52,51 @@ public class DetailsActivity extends AppCompatActivity {
 
         retry_button = findViewById(R.id.details_retry);
         retry_button.setVisibility(View.INVISIBLE);
-        retry_button.setOnClickListener(v -> {
-            textView.setText(R.string.details_loading);
-            textView.setTextColor(getResources().getColor(R.color.white));
-            retry_button.setVisibility(View.INVISIBLE);
-            new GetDetails_Task(this, appid).execute();
-            new GetImageHeader_Task(this, appid).execute();
-        });
 
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
 
-        favStorage = FavStorage.getInstance(this);
-
-        if (appid == -1) {
-            textView.setText(R.string.details_error_id);
-            fab.hide();
-        } else {
-            GetDetails_Task gd = new GetDetails_Task(this, appid);
-            GetImageHeader_Task gi = new GetImageHeader_Task(this, appid);
-            gd.execute();
-            gi.execute();
-
-            isFavourite = favStorage.isFav(appid);
-
-            fab.setOnClickListener(view -> {
-                if (isFavourite) {
-                    Toast.makeText(getApplicationContext(), R.string.fav_removed, Toast.LENGTH_SHORT).show();
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.white_add_circle_outline_24));
-                    isFavourite = false;
-                    removeFromFav();
-
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.fav_added, Toast.LENGTH_SHORT).show();
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.white_star_24));
-                    isFavourite = true;
-                    addToFav();
-                }
+        if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this)) {
+            retry_button.setOnClickListener(v -> {
+                textView.setText(R.string.details_loading);
+                textView.setTextColor(getResources().getColor(R.color.white));
+                retry_button.setVisibility(View.INVISIBLE);
+                new GetDetails_Task(this, appid).execute();
+                new GetImageHeader_Task(this, appid).execute();
             });
-            if (isFavourite)
-                fab.setImageDrawable(getResources().getDrawable(R.drawable.white_star_24));
-            else
-                fab.setImageDrawable(getResources().getDrawable(R.drawable.white_add_circle_outline_24));
+
+            favStorage = FavStorage.getInstance(this);
+
+            if (appid == -1) {
+                textView.setText(R.string.details_error_id);
+                fab.hide();
+            } else {
+                GetDetails_Task gd = new GetDetails_Task(this, appid);
+                GetImageHeader_Task gi = new GetImageHeader_Task(this, appid);
+                gd.execute();
+                gi.execute();
+
+                isFavourite = favStorage.isFav(appid);
+
+                fab.setOnClickListener(view -> {
+                    if (isFavourite) {
+                        Toast.makeText(getApplicationContext(), R.string.fav_removed, Toast.LENGTH_SHORT).show();
+                        fab.setImageDrawable(getResources().getDrawable(R.drawable.white_add_circle_outline_24));
+                        isFavourite = false;
+                        removeFromFav();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.fav_added, Toast.LENGTH_SHORT).show();
+                        fab.setImageDrawable(getResources().getDrawable(R.drawable.white_star_24));
+                        isFavourite = true;
+                        addToFav();
+                    }
+                });
+                if (isFavourite)
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.white_star_24));
+                else
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.white_add_circle_outline_24));
+            }
         }
     }
 

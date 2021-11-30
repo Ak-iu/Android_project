@@ -64,7 +64,7 @@
                 android:layout_gravity="center|top"
                 android:layout_marginTop="10dp"
                 android:minHeight="48dp"
-                android:text="@string/loading_game_list"
+                android:text="@null"
                 android:textColor="@color/white" />
 
             <Button
