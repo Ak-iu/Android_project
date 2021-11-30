@@ -1,7 +1,6 @@
 package com.example.android_project;
 
 import static android.widget.Toast.LENGTH_SHORT;
-
 import static com.example.android_project.CheckPermission.READ_WRITE_INTERNET_PERMISSION_REQUEST_CODE;
 
 import android.Manifest;
@@ -74,8 +73,7 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
                 retry_button.setVisibility(View.INVISIBLE);
                 GetGameList();
             });
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions((this),
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     READ_WRITE_INTERNET_PERMISSION_REQUEST_CODE);
@@ -185,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
     @Override
     public void onListFragmentInteraction(int appid, String name) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("name", name);
         intent.putExtra("appid", appid);
+        intent.putExtra("name", name);
         startActivity(intent);
     }
 

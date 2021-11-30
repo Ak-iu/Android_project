@@ -1,8 +1,5 @@
 package com.example.android_project;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,18 +7,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
+public class MostPlayedGamesActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
-public class MostPlayedGamesActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener,GameMap.GameMapListener{
-
-    private ArrayList<Integer> MostPlayedGamesList;
-
+    private List<Integer> mostPlayedGamesList;
     private boolean mpListLoaded = false;
+
     private GamesListFragment gamesListFragment;
     private GameMap game_map;
     private TextView alert_text = null;
@@ -33,8 +33,6 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_most_played_game);
-
-        GetGameMPList();
 
         game_map = GameMap.getInstance();
         game_map.addListener(this);
@@ -48,22 +46,25 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         bottomNavigationView = findViewById(R.id.bottom_navigation_mostPlayed);
         configureBottomView();
 
-        alert_text.setText(getString(R.string.loading_game_list));
+        if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this)) {
+            alert_text.setText(getString(R.string.loading_game_list));
 
-        if (!game_map.isWaiting())
-            notifyError();
+            if (game_map.hasMap())
+                alert_text.setVisibility(View.INVISIBLE);
+            else if (!game_map.isWaiting())
+                notifyError();
 
-        retry_button.setOnClickListener(v -> {
-            alert_text.setText(R.string.loading_game_list);
-            alert_text.setTextColor(getColor(R.color.white));
-            retry_button.setVisibility(View.INVISIBLE);
-            GetGameList();
-        });
+            retry_button.setOnClickListener(v -> {
+                alert_text.setText(R.string.loading_game_list);
+                alert_text.setTextColor(getColor(R.color.white));
+                retry_button.setVisibility(View.INVISIBLE);
+                GetGameList();
+                GetGameMPList();
+            });
+            GetGameMPList();
+        }
     }
 
-    public void setGameMPList(ArrayList<Integer> gameList) {
-        MostPlayedGamesList = gameList;
-    }
 
     private void configureBottomView() {
         bottomNavigationView.setSelectedItemId(R.id.mostPlayed);
@@ -73,15 +74,16 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
     private boolean updateMainFragment(Integer integer) {
         switch (integer) {
             case R.id.search:
-                Intent intent = new Intent(this,MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                game_map.removeListener(this);
                 finish();
                 break;
 
             case R.id.favorites:
                 Intent intent_f = new Intent(this, FavActivity.class);
                 startActivity(intent_f);
-                //game_map.removeListener(this);
+                game_map.removeListener(this);
                 finish();
                 break;
             case R.id.mostPlayed:
@@ -101,25 +103,14 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("appid", appid);
-        System.out.println(name + " : " + appid);
-
+        //System.out.println(name + " : " + appid);
         startActivity(intent);
-        System.out.println("details -> ");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void notifyUpdate() {
-        LinkedHashMap<Integer, String> games_mp = new LinkedHashMap<>();
-
-        if( mpListLoaded ) {
-            for (int id : MostPlayedGamesList)
-                games_mp.put(id, game_map.get(id));
-
-            alert_text.setVisibility(View.INVISIBLE);
-            retry_button.setVisibility(View.INVISIBLE);
-            gamesListFragment.updateList(games_mp, "");
-        }
+        fillFragment();
     }
 
     @Override
@@ -134,7 +125,8 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
     protected void onResume() {
         super.onResume();
         if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this))
-            notifyUpdate();
+            if (mpListLoaded && game_map.hasMap())
+                gamesListFragment.updateList(game_map.getMap(), "");
     }
 
     private void GetGameList() {
@@ -147,8 +139,28 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         gmpg.execute();
     }
 
-    public void setMpListLoaded(boolean mpListLoaded) {
-        this.mpListLoaded = mpListLoaded;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void returnList(List<Integer> list) {
+        mostPlayedGamesList = list;
+        mpListLoaded = true;
+        fillFragment();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void fillFragment() {
+        if (mpListLoaded && game_map.hasMap()) {
+            Map<Integer, String> games_mp = new LinkedHashMap<>();
+            for (int id : mostPlayedGamesList) {
+                String name = game_map.get(id);
+                if (name == null) {
+                    new GetName_Task(id).execute();
+                }
+                games_mp.put(id, name);
+            }
+            alert_text.setVisibility(View.INVISIBLE);
+            retry_button.setVisibility(View.INVISIBLE);
+            gamesListFragment.updateList(games_mp, "");
+        }
+    }
 }

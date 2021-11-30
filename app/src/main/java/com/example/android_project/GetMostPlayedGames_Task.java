@@ -1,7 +1,9 @@
 package com.example.android_project;
 
-import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,12 +15,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class GetMostPlayedGames_Task extends AsyncTask {
     private final String urlMostPlayed = "https://steamspy.com/api.php?request=top100in2weeks";
-    private MostPlayedGamesActivity parent;
+    private final MostPlayedGamesActivity parent;
+    List<Integer> gameList;
     private boolean internet_error = false;
-    private GameMap gameMap;
 
     public GetMostPlayedGames_Task(MostPlayedGamesActivity parent) {
         this.parent = parent;
@@ -26,25 +29,23 @@ public class GetMostPlayedGames_Task extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] objects) {
-        ArrayList<Integer> gameList = new ArrayList<Integer>();
+        gameList = new ArrayList<>();
         try {
             gameList = getGameList();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             internet_error = true;
         }
-        return gameList;
+        return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onPostExecute(Object o) {
-        parent.setGameMPList((ArrayList<Integer>) o);
-        parent.setMpListLoaded(true);
-        gameMap = GameMap.getInstance();
         if (internet_error)
-            gameMap.notifyErrorListeners();
-        else{
-            gameMap.notifyListeners();
+            parent.notifyError();
+        else {
+            parent.returnList(gameList);
         }
 
 
@@ -66,10 +67,10 @@ public class GetMostPlayedGames_Task extends AsyncTask {
 
         ArrayList<Integer> gameList = new ArrayList<Integer>();
         Iterator<String> keys = obj.keys();
-        while(keys.hasNext()) {
+        while (keys.hasNext()) {
             String key = keys.next();
             if (obj.get(key) instanceof JSONObject) {
-                gameList.add( Integer.parseInt(key) );
+                gameList.add(Integer.parseInt(key));
             }
         }
 

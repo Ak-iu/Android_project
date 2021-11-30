@@ -97,8 +97,12 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         super.onResume();
         if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this)) {
             Map<Integer, String> games_fav = new HashMap<>();
-            for (int id : favStorage.getFav_list())
-                games_fav.put(id, game_map.get(id));
+            for (int id : favStorage.getFav_list()) {
+                String name = game_map.get(id);
+                if (name == null)
+                    new GetName_Task(id).execute();
+                games_fav.put(id, name);
+            }
             gamesListFragment.updateList(games_fav, "");
         }
     }
@@ -106,8 +110,8 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
     @Override
     public void onListFragmentInteraction(int appid, String name) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("name", name);
         intent.putExtra("appid", appid);
+        intent.putExtra("name", appid);
         //System.out.println(name + " : " + appid);
         startActivity(intent);
     }
@@ -116,8 +120,12 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
     @Override
     public void notifyUpdate() {
         Map<Integer, String> games_fav = new HashMap<>();
-        for (int id : favStorage.getFav_list())
-            games_fav.put(id, game_map.get(id));
+        for (int id : favStorage.getFav_list()) {
+            String name = game_map.get(id);
+            if (name == null)
+                new GetName_Task(id).execute();
+            games_fav.put(id, name);
+        }
         alert_text.setVisibility(View.INVISIBLE);
         gamesListFragment.updateList(games_fav, "");
     }

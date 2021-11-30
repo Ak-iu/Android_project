@@ -21,9 +21,8 @@ public class GetDetails_Task extends AsyncTask {
     private final String urlPlayers = "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?";
     private final String urlDetails = "https://store.steampowered.com/api/appdetails?";
     private final int appid;
-    private boolean internet_error = false;
     private final DetailsActivity parent;
-
+    private boolean internet_error = false;
     //Results
     private int result_player_count;
     private String result_details;
