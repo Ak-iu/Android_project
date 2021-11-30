@@ -37,30 +37,33 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         game_map = GameMap.getInstance();
         game_map.addListener(this);
 
-        favStorage = FavStorage.getInstance(this);
-        gamesListFragment = new GamesListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.GamesFavFragment, gamesListFragment).commit();
-
         alert_text = findViewById(R.id.alert_text_fav);
         retry_button = findViewById(R.id.btnRetry_fav);
         retry_button.setVisibility(View.INVISIBLE);
+
         bottomNavigationView = findViewById(R.id.bottom_navigation_fav);
         configureBottomView();
 
-        alert_text.setText(getString(R.string.loading_game_list));
+        gamesListFragment = new GamesListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.GamesFavFragment, gamesListFragment).commit();
 
-        if (game_map.hasMap())
-            alert_text.setVisibility(View.INVISIBLE);
-        else if (!game_map.isWaiting())
-            notifyError();
+        if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this)) {
 
-        retry_button.setOnClickListener(v -> {
-            alert_text.setText(R.string.loading_game_list);
-            alert_text.setTextColor(getColor(R.color.white));
-            retry_button.setVisibility(View.INVISIBLE);
-            GetGameList();
-        });
+            favStorage = FavStorage.getInstance(this);
+            alert_text.setText(getString(R.string.loading_game_list));
 
+            if (game_map.hasMap())
+                alert_text.setVisibility(View.INVISIBLE);
+            else if (!game_map.isWaiting())
+                notifyError();
+
+            retry_button.setOnClickListener(v -> {
+                alert_text.setText(R.string.loading_game_list);
+                alert_text.setTextColor(getColor(R.color.white));
+                retry_button.setVisibility(View.INVISIBLE);
+                GetGameList();
+            });
+        }
     }
 
     private boolean updateMainFragment(Integer integer) {
@@ -86,10 +89,12 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
     @Override
     protected void onResume() {
         super.onResume();
-        Map<Integer, String> games_fav = new HashMap<>();
-        for (int id : favStorage.getFav_list())
-            games_fav.put(id, game_map.get(id));
-        gamesListFragment.updateList(games_fav, "");
+        if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this)) {
+            Map<Integer, String> games_fav = new HashMap<>();
+            for (int id : favStorage.getFav_list())
+                games_fav.put(id, game_map.get(id));
+            gamesListFragment.updateList(games_fav, "");
+        }
     }
 
     @Override

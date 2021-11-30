@@ -2,7 +2,11 @@ package com.example.android_project;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import static com.example.android_project.CheckPermission.READ_WRITE_INTERNET_PERMISSION_REQUEST_CODE;
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,10 +43,11 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        EditText game_name_edit = findViewById(R.id.game_name_edit);
         search_button = findViewById(R.id.search_button);
         search_button.setVisibility(View.INVISIBLE);
+
+        EditText game_name_edit = findViewById(R.id.game_name_edit);
+        search_button.setOnClickListener(v -> search_game(game_name_edit));
 
         alert_text = findViewById(R.id.alert_text);
         retry_button = findViewById(R.id.btnRetry);
@@ -48,28 +55,61 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         configureBottomView();
 
-        show_loading_text();
-
-        //Async Task pour obtenir la liste des jeux
         game_map = GameMap.getInstance();
         game_map.addListener(this);
-        if (game_map.hasMap()) {
-            alert_text.setVisibility(View.INVISIBLE);
-            search_button.setVisibility(View.VISIBLE);
-        } else if (!game_map.isWaiting()) {
-            GetGameList();
+
+        if (CheckPermission.checkPermissionForReadExternalStorage(this) && CheckPermission.checkPermissionForInternet(this)) {
+            show_loading_text();
+            if (game_map.hasMap()) {
+                alert_text.setVisibility(View.INVISIBLE);
+                search_button.setVisibility(View.VISIBLE);
+            } else if (!game_map.isWaiting()) {
+                //Async Task pour obtenir la liste des jeux
+                GetGameList();
+            }
+
+            retry_button.setOnClickListener(v -> {
+                alert_text.setText(R.string.loading_game_list);
+                alert_text.setTextColor(getColor(R.color.white));
+                retry_button.setVisibility(View.INVISIBLE);
+                GetGameList();
+            });
         }
-
-        search_button.setOnClickListener(v -> search_game(game_name_edit));
-        retry_button.setOnClickListener(v -> {
-            alert_text.setText(R.string.loading_game_list);
-            alert_text.setTextColor(getColor(R.color.white));
-            retry_button.setVisibility(View.INVISIBLE);
-            GetGameList();
-        });
-
+        else {
+            ActivityCompat.requestPermissions((this),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    READ_WRITE_INTERNET_PERMISSION_REQUEST_CODE);
+        }
         gamesListFragment = new GamesListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.GamesFoundFragment, gamesListFragment).commit();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean permissions_ok = true;
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                permissions_ok = false;
+                break;
+            }
+        }
+        if (permissions_ok) {
+            show_loading_text();
+            if (game_map.hasMap()) {
+                alert_text.setVisibility(View.INVISIBLE);
+                search_button.setVisibility(View.VISIBLE);
+            } else if (!game_map.isWaiting()) {
+                GetGameList();
+            }
+            retry_button.setOnClickListener(v -> {
+                alert_text.setText(R.string.loading_game_list);
+                alert_text.setTextColor(getColor(R.color.white));
+                retry_button.setVisibility(View.INVISIBLE);
+                GetGameList();
+            });
+        }
     }
 
     private void configureBottomView() {
