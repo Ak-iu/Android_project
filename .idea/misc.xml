@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.29625" />
+        <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/drawable-v24/white_add_circle_outline_24.xml" value="0.29625" />
+        <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/drawable-v24/white_star_24.xml" value="0.39921875" />
+        <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/drawable/ic_launcher_background.xml" value="0.29625" />
         <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/layout/activity_fav.xml" value="0.16941529235382308" />
         <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/layout/activity_most_played_game.xml" value="0.19302848575712145" />

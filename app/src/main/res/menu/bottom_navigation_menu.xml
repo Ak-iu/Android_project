@@ -13,7 +13,7 @@
     <item
         android:id="@+id/mostPlayed"
         android:enabled="true"
-        android:icon="@drawable/white_star_24"
+        android:icon="@drawable/winner_podium_icon_148754"
         android:title="@string/mostPlayed"/>
 
 </menu>
