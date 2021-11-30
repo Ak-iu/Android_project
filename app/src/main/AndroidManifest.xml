@@ -15,7 +15,10 @@
         android:theme="@style/Theme.Android_project" >
         <activity
             android:name=".MostPlayedGamesActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/mostPlayed"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Android_project"/>
         <activity
             android:name=".FavActivity"
             android:exported="true"

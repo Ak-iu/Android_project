@@ -63,8 +63,6 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
             retry_button.setVisibility(View.INVISIBLE);
             GetGameList();
         });
-
-
     }
 
 
@@ -122,6 +120,7 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
                 games_mp.put(id, game_map.get(id));
 
             alert_text.setVisibility(View.INVISIBLE);
+            retry_button.setVisibility(View.INVISIBLE);
             gamesListFragment.updateList(games_mp, "");
         }
 
