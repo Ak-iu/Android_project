@@ -23,8 +23,6 @@
     <string name="score_mc">Score Metacritic</string>
     <string name="details_fav_description">favourites</string>
     <string name="player_count">Player count</string>
-
-    <string name="large_text" translatable="false" />
     <string name="details_error_id">Error : id is invalid</string>
     <string name="fav_added">Added to favourites</string>
     <string name="fav_removed">Removed from favourites</string>

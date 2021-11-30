@@ -13,6 +13,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * Tâche asynchrone permettant de récupérer les détails d'un jeu depuis l'api
+ */
+
 public class GetDetails_Task extends AsyncTask {
     private final String urlPlayers = "https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?";
     private final String urlDetails = "https://store.steampowered.com/api/appdetails?";
@@ -41,7 +45,7 @@ public class GetDetails_Task extends AsyncTask {
             result_details = getDetails();
         } catch (IOException e) {
             internet_error = true;
-            System.out.println("Internet Error");
+            //System.out.println("Internet Error");
             //e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -52,7 +56,7 @@ public class GetDetails_Task extends AsyncTask {
     private int getPlayerCount() throws JSONException, IOException {
         URL url = new URL(urlPlayers + "appid=" + appid);
         URLConnection c = url.openConnection();
-        System.out.println(url);
+        //System.out.println(url);
         c.connect();
         BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
         StringBuilder sb = new StringBuilder();
@@ -72,7 +76,7 @@ public class GetDetails_Task extends AsyncTask {
     private String getDetails() throws IOException, JSONException {
         URL url = new URL(urlDetails + "appids=" + appid + "&l=" + parent.getString(R.string.lang) + "&cc=" + parent.getString(R.string.currency));
         URLConnection c = url.openConnection();
-        System.out.println(url);
+        //System.out.println(url);
         c.connect();
         BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
         StringBuilder sb = new StringBuilder();

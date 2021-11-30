@@ -15,7 +15,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class InternalStorage {
+/**
+ * Classe abstraite contenant des fonctions de gestion de la mémoire
+ */
+
+public abstract class InternalStorage {
 
     public static void writeFileOnInternalStorage(Context mcoContext, String sFile, String sBody) {
         File dir = mcoContext.getFilesDir();
@@ -117,5 +121,4 @@ public class InternalStorage {
             return fav_list;
         }
     }
-
 }

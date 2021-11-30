@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Système de gestion de la map (id->nom) de tous les jeux
+ * Permet de notifier à des listeners des changements dans la map et des erreurs
+ */
+
 public class GameMap { //Singleton
     private static GameMap instance = null;
     private final List<GameMapListener> listeners;
@@ -77,6 +82,9 @@ public class GameMap { //Singleton
         this.waiting = waiting;
     }
 
+    /**
+     * Interface à implémenter pour les listeners
+     */
     public interface GameMapListener {
         void notifyUpdate();
 

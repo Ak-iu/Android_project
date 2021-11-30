@@ -18,6 +18,10 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Tâche asynchrone permettant de récupérer la liste des jeux depuis l'api et la mémoire
+ */
+
 public class GetGameList_Task extends AsyncTask {
 
     private final String apiKey = "C3F1DE897195B9FAAA2572D388F90D52";
@@ -41,7 +45,8 @@ public class GetGameList_Task extends AsyncTask {
             gameMap = GameMap.getInstance();
             gameMap.setWaiting(true);
             game_map = new HashMap<>();
-            try {
+
+            try { //Lecture de la map mise en mémoire
                 game_map = InternalStorage.readMapOnInternalStorage(ctx, "gameMap");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -49,27 +54,24 @@ public class GetGameList_Task extends AsyncTask {
             }
             lastID = 0;
             more_results = true;
-            try {
+
+            try { //Lecture de la valeur de temps à demander à l'api
                 last_modified = InternalStorage.readLongOnInternalStorage(ctx, "last_modified");
             } catch (FileNotFoundException ignored) { //Le fichier n'a pas encore été créé
             } catch (EOFException e) { //Le fichier est vide
                 last_modified = 0;
             }
-            do {
+            do { //Récupération des jeux restants
                 String game_list = getAllGames(lastID, last_modified);
                 if (!internet_error) game_map.putAll(getGamesMap(game_list));
             } while (more_results && !internet_error);
 
             if (!internet_error) {
-                System.out.println("Récupération finie");
                 last_modified = max_modified;
-
                 // write the map on internal storage
                 InternalStorage.writeFileOnInternalStorage(ctx, "gameMap", game_map, Context.MODE_APPEND);
                 InternalStorage.writeLongOnInternalStorage(ctx, "last_modified", last_modified, Context.MODE_PRIVATE);
-                System.out.println("Map mise en mémoire interne !");
             }
-            return null;
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -79,7 +81,6 @@ public class GetGameList_Task extends AsyncTask {
 
     @Override
     protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
         gameMap.setWaiting(false);
         if (internet_error)
             gameMap.notifyErrorListeners();
@@ -106,8 +107,6 @@ public class GetGameList_Task extends AsyncTask {
 
         } catch (UnknownHostException e) { //No internet connexion
             internet_error = true;
-            System.out.println("Internet error");
-            //e.printStackTrace();
             return null;
         }
     }
@@ -131,7 +130,7 @@ public class GetGameList_Task extends AsyncTask {
             try {
                 more_results = response.getBoolean("have_more_results");
                 lastID = response.getInt("last_appid");
-                System.out.println(lastID);
+                //System.out.println(lastID);
             } catch (JSONException j) {
                 more_results = false;
             }

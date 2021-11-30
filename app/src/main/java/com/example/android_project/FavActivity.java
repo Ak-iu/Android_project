@@ -15,6 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity pour lister et accéder à tous les jeux mis en favoris
+ */
+
 public class FavActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
     private GamesListFragment gamesListFragment;
@@ -51,7 +55,6 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
             notifyError();
 
         retry_button.setOnClickListener(v -> {
-            System.out.println("Retry");
             alert_text.setText(R.string.loading_game_list);
             alert_text.setTextColor(getColor(R.color.white));
             retry_button.setVisibility(View.INVISIBLE);
@@ -94,7 +97,7 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("appid", appid);
-        System.out.println(name + " : " + appid);
+        //System.out.println(name + " : " + appid);
         startActivity(intent);
     }
 

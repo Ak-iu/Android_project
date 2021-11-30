@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Fragment pour lister des jeux
+ */
 
 public class GamesListFragment extends Fragment {
 

@@ -11,6 +11,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Tâche asynchrone permettant de récupérer la bannière du jeu
+ */
+
 public class GetImageHeader_Task extends AsyncTask {
     private final int appid;
     private final String urlHeader;

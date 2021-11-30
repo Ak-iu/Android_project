@@ -6,6 +6,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Classe permettant la recherche de jeux dans toute la map
+ */
+
 public class SearchGame {
     private final Map<Integer, String> game_map;
 

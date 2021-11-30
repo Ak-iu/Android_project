@@ -18,6 +18,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Map;
 
+/**
+ * Activity permettant de rechercher et lister un ou des jeux en fonction de leur nom
+ */
+
 public class MainActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
     private GamesListFragment gamesListFragment;
@@ -58,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
 
         search_button.setOnClickListener(v -> search_game(game_name_edit));
         retry_button.setOnClickListener(v -> {
-            System.out.println("Retry");
             alert_text.setText(R.string.loading_game_list);
             alert_text.setTextColor(getColor(R.color.white));
             retry_button.setVisibility(View.INVISIBLE);
@@ -102,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         }
         // if not null search the game in the list
         else {
-            System.out.println("début de la recherche");
             try {
                 SearchGame sg = new SearchGame(game_map.getMap());
                 Map<Integer, String> gamesFound = sg.search(game_name);
@@ -138,13 +140,11 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("name", name);
         intent.putExtra("appid", appid);
-        System.out.println(name + " : " + appid);
         startActivity(intent);
     }
 
     @Override
     public void notifyUpdate() {
-        System.out.println("map acquise");
         alert_text.setVisibility(View.INVISIBLE);
         search_button.setVisibility(View.VISIBLE);
     }

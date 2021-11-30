@@ -9,15 +9,18 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Système de gestion des favoris
+ */
+
 public class FavStorage { //Singleton
 
     private static FavStorage instance = null;
     private final List<Integer> fav_list;
 
     private FavStorage(Context ctx) {
-        System.out.println("new favstorage instance");
         fav_list = readListInFile(ctx);
-        System.out.println(fav_list);
+        //System.out.println(fav_list);
     }
 
     public static FavStorage getInstance(Context ctx) {
@@ -43,7 +46,7 @@ public class FavStorage { //Singleton
                 e.printStackTrace();
             }
         }
-        System.out.println("add " + appid + " liste = " + fav_list + " file = " + readListInFile(ctx));
+        //System.out.println("add " + appid + " liste = " + fav_list + " file = " + readListInFile(ctx));
     }
 
     public void removeFromFav(int appid, Context ctx) {
@@ -55,7 +58,7 @@ public class FavStorage { //Singleton
                 e.printStackTrace();
             }
         }
-        System.out.println("remove liste = " + fav_list + " file = " + readListInFile(ctx));
+        //System.out.println("remove liste = " + fav_list + " file = " + readListInFile(ctx));
     }
 
 

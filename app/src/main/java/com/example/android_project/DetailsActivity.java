@@ -13,6 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * Activity pour récupérer et afficher les détails d'un jeu
+ * Elle permet aussi de mettre le jeu en favori
+ */
+
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String EXTRA_KEY_NAME = "name";
