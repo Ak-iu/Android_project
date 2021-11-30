@@ -124,6 +124,7 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
     }
 
     private void configureBottomView() {
+        bottomNavigationView.setSelectedItemId(R.id.favorites);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 
