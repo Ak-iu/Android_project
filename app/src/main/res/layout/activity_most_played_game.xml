@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_blue_steam"
+    android:orientation="vertical"
+    tools:context=".MostPlayedGamesActivity">
+
+
+  <FrameLayout
+      android:id="@+id/GamesMostPlayedFragment"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="2">
+
+    <TextView
+        android:id="@+id/alert_text_mostPlayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="10dp"
+        android:minHeight="48dp"
+        android:text="@string/loading_game_list"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnRetry_mostPlayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/black_blue_steam"
+        android:text="@string/retry"
+        android:textColor="@color/white"
+        app:rippleColor="@color/grey" />
+
+  </FrameLayout>
+
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottom_navigation_mostPlayed"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+
+      android:layout_weight="0"
+      app:menu="@menu/bottom_navigation_menu" />
+
+</LinearLayout>

@@ -3,13 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/layout/activity_fav.xml" value="0.16941529235382308" />
         <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Akiura/AndroidStudioProjects/Android_project/app/src/main/res/layout/activity_most_played_game.xml" value="0.19302848575712145" />
         <entry key="app/src/main/res/drawable-v24/dark_blue_star_24.xml" value="0.1398148148148148" />
         <entry key="app/src/main/res/drawable-v24/grey_star_24.xml" value="0.25555555555555554" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1515625" />
         <entry key="app/src/main/res/drawable-v24/outline_add_circle_outline_24.xml" value="0.25555555555555554" />
-        <entry key="app/src/main/res/drawable-v24/white_add_circle_outline_24.xml" value="0.25555555555555554" />
-        <entry key="app/src/main/res/drawable-v24/white_star_24.xml" value="0.25555555555555554" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.14270833333333333" />
         <entry key="app/src/main/res/drawable/search_loop_foreground.xml" value="0.1515625" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.21" />

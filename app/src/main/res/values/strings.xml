@@ -30,4 +30,5 @@
     <string name="title_activity_fav">Favorites</string>
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
+    <string name="mostPlayed">Most Played</string>
 </resources>

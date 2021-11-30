@@ -85,11 +85,18 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
                 break;
 
             case R.id.favorites:
-                Intent intent = new Intent(this, FavActivity.class);
-                startActivity(intent);
+                Intent intent_f = new Intent(this, FavActivity.class);
+                startActivity(intent_f);
                 game_map.removeListener(this);
                 finish();
                 break;
+            case R.id.mostPlayed:
+                Intent intent_mp = new Intent(this, MostPlayedGamesActivity.class);
+                startActivity(intent_mp);
+                game_map.removeListener(this);
+                finish();
+                break;
+
         }
         return true;
     }

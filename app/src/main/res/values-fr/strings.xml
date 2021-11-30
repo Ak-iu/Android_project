@@ -29,4 +29,5 @@
     <string name="favorites">Favoris</string>
     <string name="search">Chercher</string>
     <string name="title_activity_fav">Favoris</string>
+    <string name="mostPlayed">Les Plus Joués</string>
 </resources>
