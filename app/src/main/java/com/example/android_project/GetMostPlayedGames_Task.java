@@ -23,10 +23,19 @@ public class GetMostPlayedGames_Task extends AsyncTask {
     List<Integer> gameList;
     private boolean internet_error = false;
 
+    /**
+     * Constructeur de la Tâche asynchrône
+     * @param parent Activité parent de la tâche
+     */
     public GetMostPlayedGames_Task(MostPlayedGamesActivity parent) {
         this.parent = parent;
     }
 
+    /**
+     * Obtention de la liste des 100 jeux Steam les joués durant les 2 dernières semaines
+     * @param objects null
+     * @return null
+     */
     @Override
     protected Object doInBackground(Object[] objects) {
         gameList = new ArrayList<>();
@@ -39,6 +48,10 @@ public class GetMostPlayedGames_Task extends AsyncTask {
         return null;
     }
 
+    /**
+     * Retourne a l'activité parent la liste des jeux les plus joués
+     * @param o
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onPostExecute(Object o) {
@@ -51,6 +64,12 @@ public class GetMostPlayedGames_Task extends AsyncTask {
 
     }
 
+    /**
+     * Requête HTTP obtenant les 100 jeux les plus joués sur Steam durant les 2 dernières semaines
+     * @return ArrayList des ID des jeux steam les plus joués
+     * @throws IOException
+     * @throws JSONException
+     */
     private ArrayList<Integer> getGameList() throws IOException, JSONException {
         URL url = new URL(urlMostPlayed);
         URLConnection c = url.openConnection();

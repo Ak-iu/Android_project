@@ -16,16 +16,24 @@ import java.net.URL;
  */
 
 public class GetImageHeader_Task extends AsyncTask {
-    private final int appid;
     private final String urlHeader;
     private final DetailsActivity parent;
 
+    /**
+     * Constructeur de la Tâche asynchrône
+     * @param parent Activité parent de la tâche
+     * @param appid  ID du jeu Steam
+     */
     public GetImageHeader_Task(DetailsActivity parent, int appid) {
-        this.appid = appid;
         this.urlHeader = "https://steamcdn-a.akamaihd.net/steam/apps/" + appid + "/header.jpg";
         this.parent = parent;
     }
 
+    /**
+     * Obtention de la bannière du jeu Steam via une requête HTTP
+     * @param objects null
+     * @return Drawable de la bannière du jeu Steam
+     */
     @Override
     protected Object doInBackground(Object[] objects) {
 
@@ -41,6 +49,10 @@ public class GetImageHeader_Task extends AsyncTask {
         return new BitmapDrawable(bmp);
     }
 
+    /**
+     * Définie la variable HeaderImage de l'activitée parent
+     * @param o null
+     */
     @Override
     protected void onPostExecute(Object o) {
         parent.setHeaderImage((Drawable) o);

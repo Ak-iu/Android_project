@@ -16,7 +16,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ *  L'activitée affiche les 100 jeux les plus joués sur Steam surant les 2 dernières semaines
+ */
 public class MostPlayedGamesActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
     private List<Integer> mostPlayedGamesList;
@@ -65,12 +67,19 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         }
     }
 
-
+    /**
+     * Configure le menu de navigation
+     */
     private void configureBottomView() {
         bottomNavigationView.setSelectedItemId(R.id.mostPlayed);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 
+    /**
+     * Gestion des actions du menu de navigation
+     * @param integer ID de la zone clickable sélectionné par l'utilisateur
+     * @return true si aucune erreur
+     */
     private boolean updateMainFragment(Integer integer) {
         switch (integer) {
             case R.id.search:
@@ -98,6 +107,11 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         return true;
     }
 
+    /**
+     *
+     * @param appid ID de l'application Steam
+     * @param name  Nom de l'application Steam
+     */
     @Override
     public void onListFragmentInteraction(int appid, String name) {
         Intent intent = new Intent(this, DetailsActivity.class);
@@ -107,12 +121,18 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         startActivity(intent);
     }
 
+    /**
+     *
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void notifyUpdate() {
         fillFragment();
     }
 
+    /**
+     *
+     */
     @Override
     public void notifyError() {
         alert_text.setText(getString(R.string.no_internet_connection));
@@ -120,6 +140,9 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
         retry_button.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Gestion du retour sur l'activité
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
@@ -129,11 +152,16 @@ public class MostPlayedGamesActivity extends AppCompatActivity implements GamesL
                 gamesListFragment.updateList(game_map.getMap(), "");
     }
 
+    /**
+     * Obtention de liste des jeux Steam de manière Asynchrone
+     */
     private void GetGameList() {
         GetGameList_Task ggl = new GetGameList_Task(this);
         ggl.execute();
     }
-
+    /**
+     * Obtention de liste des jeux Steam les plys jouées de manière Asynchrone
+     */
     private void GetGameMPList() {
         GetMostPlayedGames_Task gmpg = new GetMostPlayedGames_Task(this);
         gmpg.execute();
