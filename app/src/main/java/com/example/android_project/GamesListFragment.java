@@ -24,7 +24,6 @@ import java.util.Map;
 /**
  * Fragment pour lister des jeux
  */
-
 public class GamesListFragment extends Fragment {
 
     Map<Integer, String> games_map = new HashMap<>();
@@ -49,6 +48,11 @@ public class GamesListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Met à jour la liste des jeux à partir d'une map
+     * @param games_map map contenant les jeux
+     * @param searched_game string avec lequel trier
+     */
     @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateList(Map<Integer, String> games_map, String searched_game) {
@@ -66,6 +70,11 @@ public class GamesListFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Convertit la map des id->nom en liste de jeux
+     * @param games_map map des jeux
+     * @return liste composée d'instances de la classe Game
+     */
     public List<Game> mapToList(Map<Integer, String> games_map) {
         List<Game> gameList = new ArrayList<>();
         for (Map.Entry<Integer, String> entry : games_map.entrySet()) {
@@ -74,6 +83,12 @@ public class GamesListFragment extends Fragment {
         return gameList;
     }
 
+    /**
+     * Trie les jeux avec ceux contenant la chaine devant les autres
+     * @param gameList liste des jeux à trier
+     * @param searched_game chaine à chercher dans les noms
+     * @return liste triée
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public List<Game> sortByRelevance(List<Game> gameList, String searched_game) {
         List<Game> a_list = new LinkedList<>();
@@ -110,6 +125,9 @@ public class GamesListFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     * Interface à implémenter pour les activity pour réagir à la sélection d'un élement de la liste
+     */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(int appid, String name);
     }
