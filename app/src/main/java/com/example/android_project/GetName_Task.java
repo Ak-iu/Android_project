@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * Tache asynchrone pour récupérer le nom d'un jeu grâce à son id Steam
+ */
 public class GetName_Task extends AsyncTask {
     private final String urlDetails = "https://store.steampowered.com/api/appdetails?";
     private final int appid;
@@ -19,10 +22,19 @@ public class GetName_Task extends AsyncTask {
     //Results
     private String name;
 
+    /**
+     * Crée la tache asynchrone
+     * @param appid l'id du jeu Steam
+     */
     public GetName_Task(int appid) {
         this.appid = appid;
     }
 
+    /**
+     * Récupère le nom du jeu
+     * @param objects null
+     * @return null
+     */
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
@@ -36,6 +48,12 @@ public class GetName_Task extends AsyncTask {
         return null;
     }
 
+    /**
+     * Se connecte à l'api et récupère le nom du jeu
+     * @return le nom demandé
+     * @throws IOException problème de connexion avec l'api
+     * @throws JSONException la réponse n'a pas le bon format
+     */
     private String getName() throws IOException, JSONException {
         URL url = new URL(urlDetails + "appids=" + appid);
         URLConnection c = url.openConnection();
@@ -54,6 +72,10 @@ public class GetName_Task extends AsyncTask {
         return data.getString("name");
     }
 
+    /**
+     * Rajoute le jeu à la map globale et notifie ses observateurs
+     * @param o null
+     */
     @Override
     protected void onPostExecute(Object o) {
         GameMap gameMap = GameMap.getInstance();

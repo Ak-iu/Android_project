@@ -27,11 +27,21 @@ public class GetDetails_Task extends AsyncTask {
     private int result_player_count;
     private String result_details;
 
+    /**
+     * Constructeur de la tâche asynchrône
+     * @param parent Activité parent de la tâche
+     * @param appid  ID du jeu Steam
+     */
     public GetDetails_Task(DetailsActivity parent, int appid) {
         this.appid = appid;
         this.parent = parent;
     }
 
+    /**
+     * Récupère les informations d'un jeu
+     * @param objects null
+     * @return null
+     */
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
@@ -52,6 +62,12 @@ public class GetDetails_Task extends AsyncTask {
         return null;
     }
 
+    /**
+     * Se connecte à l'api pour obtenir le nombre de joueurs actifs
+     * @return le nombre de joueur ou 0 si absent dans la réponse
+     * @throws IOException problème de connexion avec l'api
+     * @throws JSONException la réponse n'a pas le bon format
+     */
     private int getPlayerCount() throws JSONException, IOException {
         URL url = new URL(urlPlayers + "appid=" + appid);
         URLConnection c = url.openConnection();
@@ -72,6 +88,12 @@ public class GetDetails_Task extends AsyncTask {
         return 0;
     }
 
+    /**
+     * Se connecte à l'api pour obtenir les détails du jeu
+     * @return la chaine de caractère contenant les détails du jeu
+     * @throws IOException problème de connexion avec l'api
+     * @throws JSONException la réponse n'a pas le bon format
+     */
     private String getDetails() throws IOException, JSONException {
         URL url = new URL(urlDetails + "appids=" + appid + "&l=" + parent.getString(R.string.lang) + "&cc=" + parent.getString(R.string.currency));
         URLConnection c = url.openConnection();
@@ -148,6 +170,10 @@ public class GetDetails_Task extends AsyncTask {
         return details.toString();
     }
 
+    /**
+     * Retourne les détails à la classe mère
+     * @param o null
+     */
     @Override
     protected void onPostExecute(Object o) {
         if (!internet_error)
