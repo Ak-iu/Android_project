@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * Activity permettant de rechercher et lister un ou des jeux en fonction de leur nom
  */
-
 public class MainActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
     private GamesListFragment gamesListFragment;
@@ -110,10 +109,18 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         }
     }
 
+    /**
+     * Configure le menu de navigation
+     */
     private void configureBottomView() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 
+    /**
+     * Gestion des actions du menu de navigation
+     * @param integer ID de la zone clickable sélectionné par l'utilisateur
+     * @return true si aucune erreur
+     */
     private boolean updateMainFragment(Integer integer) {
         switch (integer) {
             case R.id.search:
@@ -139,7 +146,10 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         return true;
     }
 
-
+    /**
+     * Lance la recherche de jeux dans la map globale
+     * @param game_name_edit la zone de texte qui contient la chaine à rechercher
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void search_game(EditText game_name_edit) {
         // game name typed by user
@@ -163,16 +173,24 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         }
     }
 
+    /**
+     * Crée et lance l'execution d'une récupération de map
+     */
     private void GetGameList() {
         GetGameList_Task ggl = new GetGameList_Task(this);
         ggl.execute();
     }
 
-
+    /**
+     * Affiche le texte de chargement
+     */
     public void show_loading_text() {
         alert_text.setText(getString(R.string.loading_game_list));
     }
 
+    /**
+     * Affiche les informations et actions d'erreurs
+     */
     @Override
     public void notifyError() {
         alert_text.setText(getString(R.string.no_internet_connection));
@@ -180,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements GamesListFragment
         retry_button.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Lance l'activity pour afficher les détails du jeu selectionné
+     * @param appid id du jeu
+     * @param name nom de jeu
+     */
     @Override
     public void onListFragmentInteraction(int appid, String name) {
         Intent intent = new Intent(this, DetailsActivity.class);

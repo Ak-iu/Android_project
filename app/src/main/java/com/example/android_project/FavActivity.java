@@ -146,7 +146,7 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
     }
 
     /**
-     * Afficher les informations et actions d'erreurs
+     * Affiche les informations et actions d'erreurs
      */
     @Override
     public void notifyError() {

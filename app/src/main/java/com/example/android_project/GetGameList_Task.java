@@ -39,6 +39,11 @@ public class GetGameList_Task extends AsyncTask {
         this.ctx = ctx;
     }
 
+    /**
+     * Récupère la liste des jeux du store Steam
+     * @param objects null
+     * @return null
+     */
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
@@ -79,6 +84,10 @@ public class GetGameList_Task extends AsyncTask {
         return null;
     }
 
+    /**
+     * Met à jour la map globale et notifie ses observateurs
+     * @param o null
+     */
     @Override
     protected void onPostExecute(Object o) {
         gameMap.setWaiting(false);
@@ -91,6 +100,13 @@ public class GetGameList_Task extends AsyncTask {
         }
     }
 
+    /**
+     * Se connecte à l'api et récupère la liste des favoris
+     * @param id champ last_appid de la requête
+     * @param modified_since champ if_modified_since de la requête
+     * @return la réponse de l'api
+     * @throws IOException en cas d'erreur de connexion avec l'api
+     */
     public String getAllGames(int id, long modified_since) throws IOException {
         URL url = new URL(urlLink + "&last_appid=" + id + "&if_modified_since=" + modified_since);
         URLConnection c = url.openConnection();
@@ -111,6 +127,12 @@ public class GetGameList_Task extends AsyncTask {
         }
     }
 
+    /**
+     * Récupère la map des jeux depuis une réponse de l'api
+     * @param game_list réponse de l'api
+     * @return la map des jeux extraite de la réponse
+     * @throws JSONException si la réponse n'est pas bien formée
+     */
     public Map<Integer, String> getGamesMap(String game_list) throws JSONException {
         Map<Integer, String> game_map = new HashMap<>();
         JSONObject obj = new JSONObject(game_list);
