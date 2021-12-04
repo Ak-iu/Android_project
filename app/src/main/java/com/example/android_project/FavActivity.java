@@ -18,7 +18,6 @@ import java.util.Map;
 /**
  * Activity pour lister et accéder à tous les jeux mis en favoris
  */
-
 public class FavActivity extends AppCompatActivity implements GamesListFragment.OnListFragmentInteractionListener, GameMap.GameMapListener {
 
     private GamesListFragment gamesListFragment;
@@ -66,6 +65,11 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         }
     }
 
+    /**
+     * Gestion des actions du menu de navigation
+     * @param integer ID de la zone clickable sélectionné par l'utilisateur
+     * @return true si aucune erreur
+     */
     private boolean updateMainFragment(Integer integer) {
         switch (integer) {
             case R.id.search:
@@ -91,6 +95,9 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         return true;
     }
 
+    /**
+     * Met à jour la map des favoris et le fragment
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
@@ -107,6 +114,11 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         }
     }
 
+    /**
+     * Lance l'activity pour afficher les détails du jeu selectionné
+     * @param appid id du jeu
+     * @param name nom de jeu
+     */
     @Override
     public void onListFragmentInteraction(int appid, String name) {
         Intent intent = new Intent(this, DetailsActivity.class);
@@ -116,6 +128,9 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         startActivity(intent);
     }
 
+    /**
+     * Met à jour la map des favoris et le fragment
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void notifyUpdate() {
@@ -130,6 +145,9 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         gamesListFragment.updateList(games_fav, "");
     }
 
+    /**
+     * Afficher les informations et actions d'erreurs
+     */
     @Override
     public void notifyError() {
         alert_text.setText(getString(R.string.no_internet_connection));
@@ -137,11 +155,17 @@ public class FavActivity extends AppCompatActivity implements GamesListFragment.
         retry_button.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Configure le menu de navigation
+     */
     private void configureBottomView() {
         bottomNavigationView.setSelectedItemId(R.id.favorites);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> updateMainFragment(item.getItemId()));
     }
 
+    /**
+     * Crée et lance une tache pour récupérer la liste des favoris
+     */
     private void GetGameList() {
         GetGameList_Task ggl = new GetGameList_Task(this);
         ggl.execute();

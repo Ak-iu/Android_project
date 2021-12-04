@@ -15,6 +15,11 @@ public abstract class CheckPermission {
     public static final int INTERNET_PERMISSION_REQUEST_CODE = 2;
     public static final int READ_WRITE_INTERNET_PERMISSION_REQUEST_CODE = 3;
 
+    /**
+     * Test si l'appli à l'autorisation du stockage externe
+     * @param context contexte
+     * @return true si l'appli à l'autorisation
+     */
     public static boolean checkPermissionForReadExternalStorage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int result = context.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -23,6 +28,11 @@ public abstract class CheckPermission {
         return false;
     }
 
+    /**
+     * Test si l'appli à l'autorisation de se connecter à internet
+     * @param context contexte
+     * @return true si l'appli à l'autorisation
+     */
     public static boolean checkPermissionForInternet(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int result = context.checkSelfPermission(Manifest.permission.INTERNET);

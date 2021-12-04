@@ -96,14 +96,25 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ajoute le jeu dans les favoris
+     */
     public void addToFav() {
         favStorage.addToFav(appid, this);
     }
 
+    /**
+     * Supprime le jeu des favoris
+     */
     public void removeFromFav() {
         favStorage.removeFromFav(appid, this);
     }
 
+    /**
+     * Fonction pour récupérer les détails et le nombre de joueurs de la tache asynchorne
+     * @param player_count le nombre de joueur du jeu
+     * @param details le string des détails du jeu
+     */
     public void returnResultGetDetails(int player_count, String details) {
         String sb = getString(R.string.details_name) + " : " + name + "\n\n" +
                 getString(R.string.player_count) + " : " + player_count + "\n\n" +
@@ -112,6 +123,9 @@ public class DetailsActivity extends AppCompatActivity {
         fab.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Affiche les éléments pour informer d'une erreur
+     */
     public void internetError() {
         textView.setText(R.string.no_internet_connection);
         textView.setTextColor(getResources().getColor(R.color.design_default_color_error));
@@ -119,6 +133,10 @@ public class DetailsActivity extends AppCompatActivity {
         fab.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Affiche la banière du jeu
+     * @param d image à afficher
+     */
     public void setHeaderImage(Drawable d) {
         headerImg.setImageDrawable(d);
     }
